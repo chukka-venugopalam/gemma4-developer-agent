@@ -1,7 +1,23 @@
+# Python
 __pycache__/
-*.pyc
-.ipynb_checkpoints/
-.pytest_cache/
-sample_observation.json
+*.py[cod]
 .venv/
-*.egg-info/
+venv/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local/generated artifacts
+dist/
+build/
+*.log
+
+# Competition artifacts
+submission.zip
+*.safetensors
+
+# Secrets
+.env
+.env.*
+!.env.example
