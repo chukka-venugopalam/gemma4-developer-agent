@@ -1,3 +1,7 @@
-# Sampling configuration
-# PLACEHOLDER.
-# Populate only with parameters supported by the competition harness.
+temperature: 0.2
+top_p: 0.95
+top_k: 40
+max_output_tokens: 4096
+thinking_config:
+  thinking_budget: 4096
+  include_thoughts: true

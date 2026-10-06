@@ -1,10 +1,19 @@
-# TODO: Replace with the exact ADK configuration after HARNESS_README.md
-# has been fully audited.
-#
-# Required final submission location:
-# submission.zip/agent.yaml
-#
-# Do not invent schema fields. Use only fields supported by the
-# competition harness and ADK specification.
-
-# PLACEHOLDER - NOT YET A VALID COMPETITION SUBMISSION
+agent_class: LlmAgent
+name: gemma_swe_hybrid_v3
+model: gemma-4-31b-it-qat-w4a16-ct
+description: Adaptive software-engineering repair agent using targeted search, code graphs, focused investigation, minimal edits, and verification.
+instruction: !include prompts/system.md
+tools:
+  - run_command
+  - read_file
+  - edit_file
+  - write_file
+  - get_status
+  - submit_patch
+  - search_similar_code
+  - get_code_neighbors
+  - get_code_subgraph
+  - agent_tool:
+      config_path: sub_agents/investigator.yaml
+      skip_summarization: true
+generate_content_config: !include configs/sampling.yaml

@@ -1,11 +1,14 @@
----
-name: repo_navigation
-description: Repository navigation skill for the Gemma 4 developer agent.
----
-
 # Repository Navigation
 
-PLACEHOLDER.
+Use the cheapest reliable evidence first:
+1. git status --short
+2. git grep -n for the strongest exact anchor
+3. read the relevant definition
+4. find nearby callers/tests
+5. use graph tools for ambiguous or cross-module relationships
+6. patch the smallest production path
+7. verify
+8. submit
 
-This skill will be implemented after the harness tool behavior and baseline
-failure modes are documented.
+Graph tools are optional evidence, not mandatory ceremony.
+If graph retrieval is empty or unhelpful, return to exact source search.
