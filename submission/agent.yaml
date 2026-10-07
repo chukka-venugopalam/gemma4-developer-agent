@@ -1,7 +1,10 @@
 agent_class: LlmAgent
-name: gemma_swe_hybrid_v3
+name: gemma_swe_pack_graph_adaptive
 model: gemma-4-31b-it-qat-w4a16-ct
-description: Adaptive software-engineering repair agent using targeted search, code graphs, focused investigation, minimal edits, and verification.
+description: >
+  Adaptive SWE repair agent combining evidence-first localization, semantic and
+  graph code intelligence, an optional read-only investigator for hard cases,
+  minimal compatible patches, and layered verification.
 instruction: !include prompts/system.md
 tools:
   - run_command
