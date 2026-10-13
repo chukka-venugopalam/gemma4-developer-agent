@@ -1,0 +1,19 @@
+agent_class: LlmAgent
+name: gemma_swe_evidence_budget_v4
+model: gemma-4-31b-it-qat-w4a16-ct
+description: >
+  Single-agent software repair. Localizes from task evidence, escalates to semantic
+  and graph retrieval only when it resolves uncertainty, makes minimal compatible
+  changes, verifies in layers, and submits a clean patch.
+instruction: !include prompts/system.md
+tools:
+  - run_command
+  - read_file
+  - edit_file
+  - write_file
+  - get_status
+  - submit_patch
+  - get_code_neighbors
+  - search_similar_code
+  - get_code_subgraph
+generate_content_config: !include configs/sampling.yaml
