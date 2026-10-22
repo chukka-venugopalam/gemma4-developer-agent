@@ -8,16 +8,29 @@ venv/
 # Jupyter
 .ipynb_checkpoints/
 
-# Local/generated artifacts
-dist/
-build/
-*.log
-
-# Competition artifacts
-submission.zip
-*.safetensors
-
-# Secrets
+# Secrets / credentials
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+kaggle.json
+
+# Generated outputs
+/dist/*.zip
+/build/
+*.tmp
+
+# Local data / models (never commit private/hidden evaluation data)
+local_data/
+private_data/
+model_cache/
+*.gguf
+*.pt
+*.pth
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

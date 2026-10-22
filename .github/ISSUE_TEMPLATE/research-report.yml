@@ -1,0 +1,30 @@
+name: Research result
+about: Add a research or ablation result with clear evidence status
+labels: [research]
+body:
+  - type: input
+    id: artifact_date
+    attributes:
+      label: Date
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+  - type: dropdown
+    id: evidence
+    attributes:
+      label: Evidence level
+      options: [CONFIRMED, INFERRED, UNKNOWN, BLOCKED, NOT TESTED]
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Research question and result
+    validations:
+      required: true
+  - type: textarea
+    id: reproducibility
+    attributes:
+      label: Commands, versions, hashes, and limitations
+    validations:
+      required: true

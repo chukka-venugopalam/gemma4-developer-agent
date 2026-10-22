@@ -1,0 +1,257 @@
+{
+  "archive": "/mnt/user-data/outputs/submission.zip",
+  "sha256": "359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b",
+  "checks": [
+    {
+      "id": "Z01",
+      "kind": "STATIC-ZIP",
+      "name": "archive opens and CRC32 verifies",
+      "status": "PASS",
+      "detail": "4 entries, all CRC32 values valid"
+    },
+    {
+      "id": "Z02",
+      "kind": "STATIC-ZIP",
+      "name": "entry names are safe (no absolute/../symlink/hidden/duplicate)",
+      "status": "PASS",
+      "detail": "no unsafe names, no directory entries, no duplicates"
+    },
+    {
+      "id": "Z03",
+      "kind": "STATIC-ZIP",
+      "name": "only allowed file extensions (.yaml .yml .md .txt .py .json .safetensors)",
+      "status": "PASS",
+      "detail": "all extensions allowed; no .sh, no dotfiles"
+    },
+    {
+      "id": "Z04",
+      "kind": "STATIC-ZIP",
+      "name": "minimal file set with agent.yaml at the archive root",
+      "status": "PASS",
+      "detail": "exactly ['agent.yaml', 'configs/sampling.yaml', 'eval_config.yaml', 'prompts/system.md']; agent.yaml is at the root"
+    },
+    {
+      "id": "Z05",
+      "kind": "STATIC-ZIP",
+      "name": "size and count limits (<3 GiB, <=10,000 files, <=1,000 YAML files, YAML <=50 MiB)",
+      "status": "PASS",
+      "detail": "4 files, 3581 bytes unpacked, 3 YAML files"
+    },
+    {
+      "id": "Z06",
+      "kind": "STATIC-ZIP",
+      "name": "exactly one root config file",
+      "status": "PASS",
+      "detail": "root configs found: ['agent.yaml']"
+    },
+    {
+      "id": "Y01",
+      "kind": "YAML",
+      "name": "YAML parses with the documented !include rules (relative, no .., depth<=10, no cycles, no duplicate keys)",
+      "status": "PASS",
+      "detail": "agent.yaml parsed; 2 include(s) resolved: agent.yaml -> prompts/system.md; agent.yaml -> configs/sampling.yaml (emulated loader, not the official one)"
+    },
+    {
+      "id": "Y02",
+      "kind": "YAML",
+      "name": "exactly one root LlmAgent (no sub-agents, agent_tool or inline agents)",
+      "status": "PASS",
+      "detail": "single agent 'swe_coder'"
+    },
+    {
+      "id": "Y10",
+      "kind": "YAML",
+      "name": "agent_class omitted: relies on the documented default (LlmAgent)",
+      "status": "PASS",
+      "detail": "agent_class is absent; HARNESS_README 2.3 states SandboxedAgentConfig defaults to LlmAgent when it is omitted (third-party copy; the official loader has not been run, see O01)"
+    },
+    {
+      "id": "Y03",
+      "kind": "YAML",
+      "name": "model is exactly gemma-4-31b-it-qat-w4a16-ct (single base model)",
+      "status": "PASS",
+      "detail": "declared models: ['gemma-4-31b-it-qat-w4a16-ct']"
+    },
+    {
+      "id": "Y04",
+      "kind": "YAML",
+      "name": "tools are exactly the six documented base tools (subset of the official registry)",
+      "status": "PASS",
+      "detail": "['run_command', 'read_file', 'edit_file', 'write_file', 'get_status', 'submit_patch'] all in registry"
+    },
+    {
+      "id": "Y05",
+      "kind": "YAML",
+      "name": "agent fields are documented LlmAgent fields; S0 adds no skills/sub-agents/adapters",
+      "status": "PASS",
+      "detail": "fields: ['description', 'generate_content_config', 'instruction', 'model', 'name', 'tools']"
+    },
+    {
+      "id": "Y06",
+      "kind": "YAML",
+      "name": "generate_content_config uses only documented fields within documented ranges",
+      "status": "PASS",
+      "detail": "fields: ['max_output_tokens', 'temperature', 'thinking_config', 'top_k', 'top_p']"
+    },
+    {
+      "id": "Y07",
+      "kind": "YAML",
+      "name": "S0 sampling: T=0.2, top_p=0.95, top_k=40, max_output_tokens=3072, thinking disabled with no budget",
+      "status": "PASS",
+      "detail": "values match the S0 specification exactly"
+    },
+    {
+      "id": "Y08",
+      "kind": "YAML",
+      "name": "eval_config.yaml has the four documented fields (nested layout) with the S0 values",
+      "status": "PASS",
+      "detail": "fields under the `evaluation:` key as documented in HARNESS_README 2.2 and 7.1"
+    },
+    {
+      "id": "Y09",
+      "kind": "YAML",
+      "name": "nested `evaluation:` layout follows the documented contract (task statement of 2026-10-17 confirms it)",
+      "status": "PASS",
+      "detail": "HARNESS_README sections 2.2 and 7.1 (third-party copy) place the four fields under `evaluation:`; the latest task statement says not to change the wrapper without contradictory primary evidence. The official loader source has NOT been read here (see run-order cell 8) and the official sample_submission/eval_config.yaml was not available."
+    },
+    {
+      "id": "P01",
+      "kind": "PROMPT",
+      "name": "prompts/system.md present, UTF-8, LF, non-empty, equals the resolved instruction",
+      "status": "PASS",
+      "detail": "3043 chars, 498 words"
+    },
+    {
+      "id": "P02",
+      "kind": "PROMPT",
+      "name": "no curly brace characters (ADK would treat {identifier} as a state key)",
+      "status": "PASS",
+      "detail": "'{' count=0, '}' count=0"
+    },
+    {
+      "id": "P03",
+      "kind": "PROMPT",
+      "name": "names all six declared tools and refers to no graph/similarity/helper/skill/custom tools",
+      "status": "PASS",
+      "detail": "all six tools named; no forbidden terms"
+    },
+    {
+      "id": "P04",
+      "kind": "PROMPT",
+      "name": "no literal shell-command examples (actions described in prose via run_command)",
+      "status": "PASS",
+      "detail": "no code fences, backticks, prompt lines, flagged commands, pipes or chaining"
+    },
+    {
+      "id": "P05",
+      "kind": "PROMPT",
+      "name": "all 25 required behaviours are stated (localization, context, reproduction, root-cause gate, verification, loops, submission, budget, turns, tool correctness)",
+      "status": "PASS",
+      "detail": "every required behaviour phrase found"
+    },
+    {
+      "id": "P06",
+      "kind": "PROMPT",
+      "name": "every snake_case identifier in the prompt is one of the six declared tools (no undeclared tool-like names)",
+      "status": "PASS",
+      "detail": "identifiers found: ['edit_file', 'get_status', 'read_file', 'run_command', 'submit_patch', 'write_file']"
+    },
+    {
+      "id": "B01",
+      "kind": "BUDGET",
+      "name": "12-hour worst-case projection (every task hits its cap; third-party estimate model)",
+      "status": "PASS",
+      "detail": "cap 5 min/task, setup 0.1 min/task, server start 15 min: N=120: 10.45 h; N=125: 10.88 h (limit 12 h; sequential execution; ESTIMATE, not an official figure)"
+    },
+    {
+      "id": "B02",
+      "kind": "BUDGET",
+      "name": "context arithmetic: prompt + max_output_tokens must stay <= 32,768",
+      "status": "PASS",
+      "detail": "max_output_tokens=3072 leaves 29696 prompt tokens; ceiling 32768; harness compaction threshold 14,336 (HARNESS_README 7.2); a request above the ceiling returns HTTP 400 (third-party reports)"
+    },
+    {
+      "id": "R01",
+      "kind": "REPRO",
+      "name": "twin archive is byte-identical",
+      "status": "PASS",
+      "detail": "sha256 359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b vs 359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b; cmp identical"
+    },
+    {
+      "id": "R02",
+      "kind": "REPRO",
+      "name": "two clean rebuilds give the same SHA-256 as the archive under test",
+      "status": "PASS",
+      "detail": "rebuild1=359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b rebuild2=359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b target=359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b"
+    },
+    {
+      "id": "O01",
+      "kind": "OFFICIAL-COMPILE",
+      "name": "official validators and compile_submission",
+      "status": "BLOCKED",
+      "detail": "not run: python 3.12.3; importable: adk_submission=no, swegemma=no, adk_eval_core=no, google.adk=no. The organizers' wheels are not installed here and the sandbox has no network. Next step: run official_harness_check.py in an environment with the competition wheelhouse installed."
+    },
+    {
+      "id": "F01",
+      "kind": "FAKE-REPLAY",
+      "name": "scripted-model replay through the real harness",
+      "status": "BLOCKED",
+      "detail": "not run: requires the official harness (swegemma, adk-submission, adk-eval-core) and a sandbox backend."
+    },
+    {
+      "id": "I01",
+      "kind": "REAL-INFERENCE",
+      "name": "real Gemma 4 inference",
+      "status": "BLOCKED",
+      "detail": "no GPU, no model weights, no inference server in this sandbox"
+    },
+    {
+      "id": "H01",
+      "kind": "HIDDEN-EVAL",
+      "name": "hidden-task evaluation / leaderboard score",
+      "status": "BLOCKED",
+      "detail": "only Kaggle's scorer can run the hidden tasks; nothing here predicts the score"
+    }
+  ],
+  "summary": {
+    "PASS": 26,
+    "WARN": 0,
+    "FAIL": 0,
+    "BLOCKED": 4
+  },
+  "inventory": [
+    {
+      "path": "/mnt/user-data/uploads/GEMMA_RESEARCH_PROMPT_2_PUBLIC_SOTA.txt",
+      "bytes": 4792,
+      "sha256": "a7b67965cc27a64e031d9fe682293d98acea555085dfaff756f8fdbe2955383b"
+    }
+  ],
+  "selftest": {
+    "all_caught": true,
+    "cases": [
+      "CAUGHT  curly brace in prompt: expected FAIL on ['P02'], got {'P02': 'FAIL'}",
+      "CAUGHT  extra graph tool declared: expected FAIL on ['Y04'], got {'Y04': 'FAIL'}",
+      "CAUGHT  skills key added: expected FAIL on ['Y05'], got {'Y05': 'FAIL'}",
+      "CAUGHT  agent_tool entry added: expected FAIL on ['Y02', 'Y04'], got {'Y02': 'FAIL', 'Y04': 'FAIL'}",
+      "CAUGHT  shell script shipped: expected FAIL on ['Z03', 'Z04'], got {'Z03': 'FAIL', 'Z04': 'FAIL'}",
+      "CAUGHT  nested root directory: expected FAIL on ['Z04'], got {'Z04': 'FAIL'}",
+      "CAUGHT  include with .. traversal: expected FAIL on ['Y01'], got {'Y01': 'FAIL'}",
+      "CAUGHT  include target missing: expected FAIL on ['Y01'], got {'Y01': 'FAIL'}",
+      "CAUGHT  wrong model: expected FAIL on ['Y03'], got {'Y03': 'FAIL'}",
+      "CAUGHT  flat eval_config under nested expectation: expected FAIL on ['Y08'], got {'Y08': 'FAIL'}",
+      "CAUGHT  budget values changed to 60 min / 100 calls / 500 turns: expected FAIL on ['Y08'], got {'Y08': 'FAIL'}",
+      "CAUGHT  thinking budget added: expected FAIL on ['Y07'], got {'Y07': 'FAIL'}",
+      "CAUGHT  thinking enabled: expected FAIL on ['Y07'], got {'Y07': 'FAIL'}",
+      "CAUGHT  max_output_tokens 16384: expected FAIL on ['Y07'], got {'Y07': 'FAIL'}",
+      "CAUGHT  forbidden generation field: expected FAIL on ['Y06'], got {'Y06': 'FAIL'}",
+      "CAUGHT  duplicate YAML key: expected FAIL on ['Y01'], got {'Y01': 'FAIL'}",
+      "CAUGHT  shell literal in prompt: expected FAIL on ['P04'], got {'P04': 'FAIL'}",
+      "CAUGHT  graph tool mentioned in prompt: expected FAIL on ['P03'], got {'P03': 'FAIL'}",
+      "CAUGHT  required behaviour deleted from prompt: expected FAIL on ['P05'], got {'P05': 'FAIL'}",
+      "CAUGHT  undeclared tool-like token in prompt: expected FAIL on ['P06'], got {'P06': 'FAIL'}",
+      "CAUGHT  agent_class set to SequentialAgent: expected FAIL on ['Y02', 'Y10'], got {'Y02': 'FAIL', 'Y10': 'FAIL'}",
+      "CAUGHT  absolute path entry: expected FAIL on ['Z02'], got {'Z02': 'FAIL'}",
+      "CAUGHT  hidden file: expected FAIL on ['Z02', 'Z04'], got {'Z02': 'FAIL', 'Z04': 'FAIL'}"
+    ]
+  }
+}

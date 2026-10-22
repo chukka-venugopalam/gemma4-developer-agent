@@ -1,0 +1,120 @@
+PROMPT 4 — GEMMA COMPETITION: TURN THE PROMPT-3 REPORT INTO A REAL, EXECUTABLE DIAGNOSTIC PIPELINE
+
+ROLE
+Act as a senior Kaggle evaluation-infrastructure engineer and empirical SWE-agent researcher. You are continuing from the attached ZIP `gemmapropmt3.zip`, which contains:
+- `DEVELOPMENT_SET_AND_ABLATION_PLAN.md`
+- `devset_tools.py`
+- `design_calculations.md`
+
+The report is useful but explicitly says that no real `tasks.jsonl`, snapshots, harness, GPU, model run, or Gemma result was available. Do not repeat the report, produce another theoretical research essay, or present synthetic self-tests as competition evidence. Your job now is to build the next executable stage and make it safe to run in the actual Kaggle competition environment.
+
+CONTEXT THAT MUST GUIDE YOUR WORK
+- We have two recent Kaggle submissions marked `Kaggle Error` and older successful submissions with public score 0.06 and 0.06; an even older one scored 0.00.
+- The exact error cause is not established from the screenshot. Do not guess or claim the submission ZIP is the cause without official validation/log evidence.
+- Our objective is to diagnose infrastructure/runtime errors first, then measure real patch success, then use those measurements to improve the agent. The target is >0.10, but it is not guaranteed.
+- Competition model: `google/gemma-4-31b-it-qat-w4a16-ct` (configuration may use the documented short model id `gemma-4-31b-it-qat-w4a16-ct`). Confirm what the actual harness requires instead of blindly changing names.
+- The report recommends: profile the real development set; audit the 84/22/23 split; scan candidate bundles for reference-patch contamination; validate the grader with reference-patch and empty-patch controls; then run a small, logged, scorer-like baseline measurement before ablations.
+- The report warns that tool-call count is not a reliable time proxy and that a 60-minute per-task cap may threaten the 12-hour whole-run budget. Do not blindly inherit long caps.
+
+STRICT RULES
+1. Inspect every file in the attached ZIP before editing or extending it. Review `devset_tools.py`; do not assume every CLI subcommand is appropriate for real files solely because synthetic `selftest` passes.
+2. Use actual files, official competition starter notebook, and official harness documentation where accessible. Search current, authoritative Kaggle/GitHub materials when needed. Cite exact links and distinguish official source text, third-party claims, observations, and assumptions.
+3. Do not fabricate a local Gemma score, dataset profile, task result, tool trace, or harness success. Label all results as one of: REAL MEASURED, STATIC VALIDATION, SYNTHETIC SELF-TEST, DESIGN ASSUMPTION, or BLOCKED BY MISSING INPUT.
+4. Do not leak `patch`, `test_patch`, expected fixes, reference diffs, or test answers into any agent prompt, model-visible context, skill, or few-shot data. They may only be used by audit/evaluation code after the agent run, or for the explicit reference-patch grader health-control.
+5. Do not create or submit a new agent ZIP as a substitute for diagnosis. First establish a valid harness path and diagnose why the last submissions errored. Do not make changes to a candidate ZIP unless the validation finds a concrete defect.
+6. Never run the full 129-task set or a multi-hour model run automatically. The notebook must begin with low-cost preflight and one/two-task smoke steps; make the 30-task measurement run a separate, manually triggered cell. Save results incrementally and support resume after a Kaggle session stops.
+7. No unbounded package installs or network assumptions. Competition execution may be offline; reuse mounted wheelhouse and the official starter flow. Discover command flags from actual installed help/docs; do not invent `swegemma eval` flags.
+8. Use Python stdlib where possible. Do not alter the user's existing files in place. Deliver generated artifacts separately.
+
+PRIMARY DELIVERABLES
+Create and provide a downloadable ZIP named `GEMMA-PROMPT4-DIAGNOSTIC-PACK.zip` containing:
+A. `GEMMA_DIAGNOSTIC_NOTEBOOK.ipynb` — a Kaggle notebook designed to be run with the competition dataset attached, using the official runtime/harness path.
+B. `preflight_submission.py` — a static validator for candidate submission ZIPs that checks ZIP integrity, safe paths, exact root layout, YAML syntax (including a proper strategy for competition `!include` tags), referenced include files, model id, declared tool names, required fields, file encodings and forbidden/irrelevant files. It must not falsely claim this equals official Kaggle compilation.
+C. `run_log_schema.json` and `normalize_results.py` — a documented, robust adapter for normalized per-task JSONL logs. If the official trace/result schema is unknown, inspect real emitted files at runtime and fail with an informative diagnostic rather than guessing field names.
+D. `README_RUN_ORDER.md` — exact cell/run order, inputs, expected outputs, estimated costs clearly labeled as estimates, stop/resume instructions, and what to attach if an error occurs.
+E. Include the supplied `devset_tools.py` only after reviewing it. If you alter it, document each change and include a diff/reason. Do not silently rewrite the existing research report.
+F. `VALIDATION_REPORT.md` with checks actually executed in your environment and checks that remain untested.
+
+NOTEBOOK RUN PLAN — IMPLEMENT THESE STAGES
+
+STAGE 0: ENVIRONMENT AND INPUT DISCOVERY (CPU, low cost)
+- Print Python/platform and list relevant `/kaggle/input` directories without exposing credentials.
+- Locate `tasks.jsonl`, snapshots, official starter notebook files, wheelhouse, `HARNESS_README.md`, and the installed harness packages/CLIs. Prefer exact discovered paths over assumptions.
+- Inspect the actual first JSONL row keys and sample types; support both `patch` and `implementation_patch` if the actual schema requires it, and report the schema found.
+- Record library/runtime versions and whether internet/CUDA/model/GPU access are actually available. Do not fail the entire notebook just because optional snapshots are absent; skip symbol-exact profiling with a clear warning.
+- Verify that the uploaded research ZIP's Python utility imports/compiles and run its synthetic `selftest`; clearly label that as plumbing-only.
+
+STAGE 1: STATIC SUBMISSION PREFLIGHT (NO MODEL)
+- Run `preflight_submission.py` against each supplied candidate ZIP if available, at minimum the latest submission candidate and one historically successful 0.06 candidate.
+- Inspect the actual official starter/harness validation route. If an official config/compiler check exists, invoke it exactly as documented and capture stdout/stderr. Do not invent a substitute command and label it official.
+- Check `!include` resolution relative to the containing file and reject traversal outside the ZIP root. Check all referenced files exist and are included in the ZIP.
+- Validate tool identifiers and argument expectations against the installed/official registry, not only a hand-maintained list.
+- Produce a differential report between failed candidates and the successful 0.06 candidate: configuration and file-level differences only, with each possible defect ranked by evidence. Correlation is not proof of cause.
+- If historical Kaggle error logs are not supplied, explicitly say the cause remains unresolved and specify the one exact detail/log needed. Still finish all static checks that are possible.
+
+STAGE 2: REAL DATA PROFILE (CPU, NO MODEL)
+- Run `devset_tools.py profile` on the actual competition `tasks.jsonl` and snapshots if available.
+- Save all generated profile outputs in a fresh `/kaggle/working/gemma_diagnostics/<run_id>/` directory; never overwrite earlier runs.
+- Print and save the repository counts, exact schema, patch-size distribution, issue-text features, hint fraction, task id duplicates, shared base commits, and any parser exceptions.
+- Do not quote third-party profile numbers as if they were independently computed.
+
+STAGE 3: SPLIT AND CONTAMINATION AUDITS (CPU, NO MODEL)
+- Locate and parse the actual 84/22/23 split if it exists. If not, do not silently generate a replacement and treat it as the existing split; show the exact expected input format and create an optional explicit split-generation cell.
+- Run `audit-split`; report cross-split hard edges and quarantine recommendations. Preserve heldout membership; do not tune on the 23-task lockbox.
+- Scan the entire current candidate bundle with `scan-bundle` for reference-patch/test contamination. Any suspicious hit must include task id, matching lines, and severity; distinguish legitimate generic code overlap from likely copied reference content.
+- Agent-visible artifacts must be generated only from agent-available inputs. Explicitly prove that `patch` / `test_patch` are not inserted into prompts or playbooks.
+
+STAGE 4: GRADER HEALTH CONTROLS (NO GEMMA INFERENCE)
+- From the actual official evaluation instructions, create a safe mechanism to test a small representative healthy task with (a) its reference patch and (b) an empty/no patch. Use these only within the evaluation harness, not the agent's context.
+- Confirm whether the reference patch passes and the empty patch fails under the official verifier. Do not assume behavior or claim this stage passed unless run.
+- If official evaluation of reference patches is too expensive or unsupported, document the exact blocker and provide a manual cell that uses the true official path; do not fake the result.
+
+STAGE 5: 1–2 TASK AGENT SMOKE TEST (EXPLICIT MANUAL RUN)
+- Reproduce the starter notebook's official model/harness bootstrap first. Do not change multiple variables at once.
+- Select 1–2 healthy, non-lockbox task IDs, chosen deterministically and visibly. Ensure the evaluation code does not show reference patches to the agent.
+- Run the current baseline candidate with conservative explicit task caps after reading current harness documentation. Capture raw logs/results, final diff, tool trace, durations, token metrics if exposed, and verifier output.
+- Add hard guards that abort or pause if the environment reports missing model files, unavailable wheel dependencies, tool-schema errors, context-window overflow, incorrect `!include`, missing task snapshot, or unexpected submission output.
+
+STAGE 6: OPTIONAL 30-TASK MEASUREMENT CELL (MANUAL, SEPARATE CELL)
+- Build but do not automatically execute a stratified 30-task run after the smoke test passes. The user must explicitly run this cell.
+- Exclude the 23-task lockbox. Use deterministic strata by repository, issue-size bucket and explicit-localization status where the profile supports them. Record the random seed and IDs before execution.
+- Use a bounded per-task cap that is explicit, no more than 10 minutes for the initial measurement, with a stop/resume mechanism. Do not use 60-minute per-task caps in this first measurement.
+- Check the global 12-hour limit and a safety margin. Explain the calculation with observed task durations once available; before measurements, label budget numbers as estimates.
+- Append a result row after every completed task and preserve raw traces/output separately. Resume by task ID without overwriting a completed result unless a deliberate new seed/run_id is specified.
+
+STAGE 7: ANALYSIS (ONLY AFTER ACTUAL RESULTS EXIST)
+- Normalize actual results using the detected schema and produce failure-class prevalence, patch/no-patch rate, valid-patch rate, tests-run-after-last-edit rate, timeout/cap-hit rate, per-request token/latency statistics if available, and duration distributions.
+- Clearly distinguish reference-patch-relative labels like `wrong_files` from agent-observable metrics. Never put post-hoc reference information in agent prompts.
+- Use `devset_tools.py summarize` and `budget` only with actual result rows. If data is absent, do not manufacture rows to make the commands produce output.
+- Recommend the next single ablation from the largest measured failure class; don't propose a broad multi-arm sweep yet.
+
+FAIL-FAST AND SAFETY BEHAVIOR
+- Every notebook stage must print PASS / WARN / FAIL / BLOCKED plus the specific reason.
+- All outputs go under a timestamped/run-id directory, and important environment details are recorded with the result hashes.
+- Do not log secrets, access tokens, or API keys.
+- Do not edit test/config files in task repositories. Do not run hidden-task IDs. Do not expose expected patch contents to model-visible contexts.
+- If an API/CLI option cannot be grounded in official docs or `--help`, mark it BLOCKED and tell me exactly what official file/output is missing instead of guessing.
+- Check whether `devset_tools.py`'s claims about task IDs, schemas, leak detection, paths, and patch columns hold against the real dataset before trusting its output. Fix concrete bugs with tests if found.
+
+ACCEPTANCE CHECKLIST
+Before handing over the ZIP, actually perform all checks possible in your current environment:
+- ZIP opens without corruption; paths are safe.
+- Every Python file compiles.
+- Every notebook cell parses; static non-GPU cells run where feasible.
+- Utility `selftest` passes, clearly marked synthetic.
+- Preflight tests include good ZIP, missing include, traversal include, malformed YAML, unknown tool and duplicate/unsafe archive path fixtures.
+- Results normalizer has tests for representative actual schemas if available and synthetic unit tests explicitly labeled synthetic otherwise.
+- Notebook discovers the real data directory dynamically instead of hard-coding a guessed path.
+- No fake Gemma result, fabricated test run, or false claim of official harness compatibility.
+- The ZIP contains no unnecessary model files, cached weights, private keys, credentials, reference-patch examples, or unrelated files.
+- Provide exact SHA-256 and a file manifest.
+
+FINAL RESPONSE FORMAT
+1. Link to `GEMMA-PROMPT4-DIAGNOSTIC-PACK.zip`.
+2. State what you really executed and what was only statically checked.
+3. List concrete submission errors found, if any, with supporting logs or file/line evidence. If none is proven, say “root cause unresolved,” not “fixed.”
+4. Give exact Kaggle notebook run order and identify the first cell the user should run.
+5. List only the minimal missing inputs, if any (especially actual Kaggle error logs, split file, and harness result/trace sample).
+6. Recommend whether the current candidate is safe to try only if evidence supports that statement. Structural validation alone is not enough to call it Kaggle-runtime validated.
+
+START NOW. First inspect the ZIP and any available submission ZIPs; then build the artifacts. Do not respond with another plan-only report.

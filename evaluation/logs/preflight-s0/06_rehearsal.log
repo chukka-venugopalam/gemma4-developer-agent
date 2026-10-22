@@ -1,0 +1,179 @@
+
+######## c01 -> OK
+python 3.12.3 | working dir /tmp/kroot/working
+outputs go to /tmp/kroot/working/preflight_out
+REMINDER: never press Submit here; never save this as a new version of the already-running notebook.
+   expected OK: YES
+
+######## c02 -> OK
+[PASS] AST extraction finds the loader
+[PASS] AST extraction detects `evaluation` key
+[PASS] AST extraction returns None for a missing function
+[PASS] official file was NOT executed
+[PASS] first user message extracted
+[PASS] undeclared tool detected
+[PASS] calls after first submit_patch counted
+[PASS] help scan finds a stub option
+[PASS] help scan quiet on plain help
+[PASS] inventory finds README, tasks, wheels, sample
+[PASS] inventory reports a missing root
+[PASS] safe_extract refuses traversal
+selftest: ALL PASS
+
+   expected OK: YES
+
+######## c03 -> OK
+  ],
+  "inference_py": [
+    "/tmp/kroot/input/gemma-4-developer-agent/scripts/inference.py"
+  ]
+}
+harness_readme     ['/tmp/kroot/input/gemma-4-developer-agent/HARNESS_README.md']
+sample_submission  ['/tmp/kroot/input/gemma-4-developer-agent/sample_submission']
+wheels             NOT FOUND
+tasks_jsonl        ['/tmp/kroot/input/gemma-4-developer-agent/tasks.jsonl']
+snapshots          NOT FOUND
+Python 3.12.3
+PyYAML                     6.0.3
+/bin/sh: 1: nvidia-smi: not found
+
+   expected OK: YES
+
+######## c05 -> AssertionError: official packages not importable: ['swegemma', 'adk_submission', 'adk_eval_core', 'google.adk']. Run the starter's offline install cells first.
+{
+  "swegemma": {
+    "error": "ModuleNotFoundError: No module named 'swegemma'"
+  },
+  "adk_submission": {
+    "error": "ModuleNotFoundError: No module named 'adk_submission'"
+  },
+  "adk_eval_core": {
+    "error": "ModuleNotFoundError: No module named 'adk_eval_core'"
+  },
+  "google.adk": {
+    "error": "ModuleNotFoundError: No module named 'google.adk'"
+  }
+}
+   expected fail-closed ('official packages not importable'): YES
+
+######## c06 -> OK
+            no --twin given
+[BLOCKED] R02  REPRO            two clean rebuilds give the same SHA-256 as the archive under test
+            no --builder given
+[BLOCKED] O01  OFFICIAL-COMPILE official validators and compile_submission
+            not run: python 3.12.3; importable: adk_submission=no, swegemma=no, adk_eval_core=no, google.adk=no. The organizers' wheels are not installed here and the sandbox has no network. Next step: run official_harness_check.py in an environment with the competition wheelhouse installed.
+[BLOCKED] F01  FAKE-REPLAY      scripted-model replay through the real harness
+            not run: requires the official harness (swegemma, adk-submission, adk-eval-core) and a sandbox backend.
+[BLOCKED] I01  REAL-INFERENCE   real Gemma 4 inference
+            no GPU, no model weights, no inference server in this sandbox
+[BLOCKED] H01  HIDDEN-EVAL      hidden-task evaluation / leaderboard score
+            only Kaggle's scorer can run the hidden tasks; nothing here predicts the score
+summary : {'PASS': 24, 'WARN': 0, 'FAIL': 0, 'BLOCKED': 6}
+
+
+   expected OK: YES
+
+######## c07 -> OK
+sample files: ['agent.yaml', 'configs/sampling.yaml', 'eval_config.yaml', 'prompts/system.md']
+S0 files    : ['agent.yaml', 'configs/sampling.yaml', 'eval_config.yaml', 'prompts/system.md']
+sample eval_config.yaml layout: nested
+S0 eval_config.yaml layout: nested
+VERDICT: S0 and the official sample both nest the four limits under `evaluation:`
+sample agent.yaml keys: ['generate_content_config', 'instruction', 'model', 'name', 'tools']
+S0 agent.yaml keys    : ['description', 'generate_content_config', 'instruction', 'model', 'name', 'tools']
+keys only in S0: ['description']; keys only in sample: []
+sample model: 'gemma-4-31b-it-qat-w4a16-ct'; S0 model: 'gemma-4-31b-it-qat-w4a16-ct'
+sample tools: ['run_command']
+S0 tools    : ['run_command', 'read_file', 'edit_file', 'write_file', 'get_status', 'submit_patch']
+VERDICT: MATCH
+   expected OK: YES
+
+######## c08 -> OK
+candidate official files: ['/tmp/kroot/input/gemma-4-developer-agent/scripts/inference.py']
+===== load_submission_eval_config =====
+def load_submission_eval_config(path):
+    data = yaml.safe_load(open(path)) or {}
+    ev = data.get('evaluation', {})
+    return ev
+===== setup_vllm_server =====
+(not found)
+===== validate_single_declared_model =====
+(not found)
+{'file': '/tmp/kroot/input/gemma-4-developer-agent/scripts/inference.py', 'reads_evaluation_key': True, 'mentions_four_keys': {'timeout_seconds': False, 'max_tool_calls': False, 'max_time_minutes': False, 'max_turns': False}}
+   expected OK: YES
+
+######## c09 -> OK
+distributions:
+  adk-submission: not installed
+  swegemma: not installed
+  adk-eval-core: not installed
+  google-adk: not installed
+python 3.12.3
+
+BLOCKED: not importable here: ['adk_submission', 'swegemma', 'adk_eval_core', 'google.adk']. Install the organizers' wheels, then re-run this script.
+Nothing official was executed. No result below this line should be read as a pass.
+
+
+exit: 3
+   expected OK: YES
+
+######## c10 -> OK
+
+/bin/sh: 1: swegemma: not found
+
+{
+  "documented_fake_model_option_found": false,
+  "hits": {}
+}
+FAKE-MODEL REPLAY: BLOCKED: no documented fake/scripted-model option found in the CLI help
+   expected OK: YES
+
+######## c12 -> OK
+fixed task id: alpha__r-1 (first of 3 public task ids in sorted order)
+   expected OK: YES
+
+######## c14 -> OK
+  [PASS] S0 budget line present: time
+  [PASS] S0 budget line present: tool_calls
+  [PASS] S0 budget line present: turns
+
+{
+  "tool_calls_found": 2,
+  "distinct": [
+    "run_command",
+    "submit_patch"
+  ],
+  "undeclared": [],
+  "calls_after_first_submit_patch": 0,
+  "note": "heuristic: reads ATIF-style `function_name` or `name`+`arguments`; confirm against the trace by eye"
+}
+   expected OK: YES
+
+######## c14 -> OK
+  [FAIL] S0 budget line present: tool_calls
+  [FAIL] S0 budget line present: turns
+  NOTE: harness defaults are visible for ['time', 'tool_calls', 'turns']: eval_config.yaml was probably NOT applied (check its layout: documented layout nests the four keys under `evaluation:`).
+
+{
+  "tool_calls_found": 2,
+  "distinct": [
+    "run_command",
+    "submit_patch"
+  ],
+  "undeclared": [],
+  "calls_after_first_submit_patch": 0,
+  "note": "heuristic: reads ATIF-style `function_name` or `name`+`arguments`; confirm against the trace by eye"
+}
+   expected OK: YES
+
+######## c15 -> OK
+outputs archive: /tmp/kroot/working/s0_preflight_outputs.zip
+STOP HERE. Download s0_preflight_outputs.zip, do NOT press Submit, and end the session.
+   expected OK: YES
+
+forbidden outputs absent: True
+archive made: True
+tasks.jsonl 'patch' field leaked into outputs: False
+synthetic inference.py executed: False
+
+SUMMARY: {"c01": true, "c02": true, "c03": true, "c05": true, "c06": true, "c07": true, "c08": true, "c09": true, "c10": true, "c12": true, "c14_good": true, "c14_bad": true, "c15": true}

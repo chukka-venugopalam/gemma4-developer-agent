@@ -1,0 +1,42 @@
+PROMPT 1 — SUBMISSION FORENSICS / WHY KAGGLE SHOWS “KAGGLE ERROR”
+================================================================================
+
+ROLE
+Act as a senior competition-infrastructure engineer and adversarial submission auditor. Your job is to diagnose why two recent submissions for the Google – The Gemma 4 Developer Agent Competition ended with “Kaggle Error”, while earlier submissions scored 0.06 and 0.00. Do not optimize the agent prompt until you separate packaging/compilation failures from inference/runtime failures and Kaggle infrastructure failures.
+
+INPUTS I WILL ATTACH
+- Latest Kaggle Submissions screenshot showing two “Kaggle Error” rows and earlier successful 0.06 / 0.00 rows.
+- submission-VNEXT(1).zip
+- submission-GRAPH-FUSION-V2.zip
+- submission-GEMMA-HYBRID-V2-ADAPTIVE.zip
+- submission-GEMMA-ADAPTIVE-EVIDENCE-V1.zip (new candidate)
+- Any error logs available from Kaggle, if present.
+
+RESEARCH SCOPE
+1. Inspect every file in every ZIP. Do not infer ZIP content from its filename. Check exact archive roots, one-and-only-one root agent config, all nested paths, include resolution, YAML schema, every agent/sub-agent model declaration, tool registry names, generation-config fields, evaluation-budget types/ranges, allowed file extensions, symlinks/path traversal, and every file referenced by `!include` or `agent_tool`.
+2. Verify against current primary sources: official competition rules/overview; current harness/submission contract and starter guide; official organizer/staff discussions; recent reports about submission errors. Search web sources and cite URLs and exact relevant statements. If the harness source is publicly inspectable, check its current code, not only a copied summary.
+3. Explicitly distinguish these outcomes: `Kaggle Error`, `Notebook Threw Exception`, timeout/resource errors, missing output ZIP, valid submission with a numeric score, and patch-validation failures. Explain which stage each outcome most likely represents. Do not assert an archive is the cause merely because the scoring run failed.
+4. Audit tool instructions against actual tool semantics. In particular, establish the correct input form and behavior of `search_similar_code`, `get_code_neighbors`, `get_code_subgraph`, `read_file`, `edit_file`, `run_command`, and `submit_patch`. Identify prompts that encourage invalid arguments or waste tool calls.
+5. If an actual validator/compiler can be executed in the available environment, run it. If it cannot, state exactly what you did validate (e.g. syntax, YAML, includes) and what remains untested. NEVER describe a structural ZIP check as a successful official harness compile or successful Gemma run.
+6. Compare the four candidates and identify the most likely causes of any failure, ranked by evidence. Label each conclusion HIGH / MEDIUM / LOW confidence. Separate a true fatal configuration defect from a possible performance weakness and from an infrastructure-side failure.
+
+STRICT RULES
+- Use up-to-date web research. Prefer official sources, organizer/staff statements, and the canonical harness source.
+- No invented logs, no assumed traceback, no fabricated local test result, no unverified fix.
+- No generic advice such as “check the YAML.” Name exact file, key, and failure mechanism where evidence supports it.
+- Do not spend this task researching leaderboard strategies; Researcher 2 owns that. Do not design a whole new agent architecture; only recommend the smallest safe correction for harness validity.
+
+REQUIRED DELIVERABLE
+Return `SUBMISSION_FORENSIC_REPORT.md` with:
+A. Executive finding in five sentences or fewer.
+B. A table of each ZIP: root config, model consistency, include paths, tool list, evaluation limits, definite defects, potential risks, validations performed.
+C. A ranked root-cause table: hypothesis | supporting evidence | contradicting evidence | confidence | exact next check.
+D. “What the screenshot does and does not prove.”
+E. One recommended ZIP to use today, or a minimal patched ZIP if you can build one safely. Include its SHA-256, exact file tree, and a validation log. Do not modify the candidate silently.
+F. Official/current source links for every nontrivial competition/harness claim.
+G. A checklist of evidence needed from Kaggle submission details if the failure remains ambiguous.
+
+FINAL ACCEPTANCE GATE
+Your report must make clear whether you proved a package defect, proved an inference/runtime defect, or cannot diagnose the precise “Kaggle Error” without server logs. A cautious, evidence-backed “unknown” is better than a confident guess.
+
+================================================================================

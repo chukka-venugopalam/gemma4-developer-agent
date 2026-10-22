@@ -1,0 +1,86 @@
+PROMPT 5 — IMPLEMENT RESEARCHER 2'S S0 BASELINE, PREFLIGHT IT, AND DELIVER A KAGGLE-READY ZIP
+
+ROLE
+You are a senior engineer for the Google – The Gemma 4 Developer Agent Competition. You are implementing a submission artifact, not writing another research report. Use the attached PUBLIC_AGENT_RESEARCH.md as the primary design source, especially sections E, F, G, and H. Also inspect the attached current candidate ZIPs and any official starter/harness files available in this workspace.
+
+CONTEXT
+We have two recent Kaggle Error results and previous successful scores of 0.06. The exact historical error causes remain unproven unless logs identify them. Do not assume a prompt change fixes a harness error.
+
+Researcher 2's recommended sequence is S0 first: a minimal single agent, thinking off, a small output cap, a 5-minute per-task envelope, six base tools, and strict loop/patch discipline. Add an investigator only in a later S1 candidate if paired evidence supports it. Graph tools, semantic retrieval, skills, and LoRA are not part of S0.
+
+PRIMARY DELIVERABLE
+Create a new, directly uploadable ZIP named exactly `submission.zip`. Also save an identical, descriptive copy named `submission-GEMMA-S0-BASELINE.zip`. Do not alter or overwrite any existing submission archive or any notebook version that is still running.
+
+IMPLEMENT THE S0 CONFIGURATION
+1. Use exactly the required model `gemma-4-31b-it-qat-w4a16-ct`.
+2. Use one root agent only. Do not include `agent_tool`, sub-agents, skills, LoRA adapters, external models, custom tools, or graph/search tools.
+3. Declare exactly these six documented base tools and no others: `run_command`, `read_file`, `edit_file`, `write_file`, `get_status`, `submit_patch`.
+4. `configs/sampling.yaml` must use:
+   - temperature: 0.2
+   - top_p: 0.95
+   - top_k: 40
+   - max_output_tokens: 3072
+   - thinking_config.include_thoughts: false
+   Do not add `thinking_budget` when thinking is disabled.
+5. `eval_config.yaml` must contain these four fields at the YAML root, not nested beneath an invented `evaluation` object:
+   - max_time_minutes: 5
+   - max_tool_calls: 50
+   - max_turns: 100
+   - timeout_seconds: 300
+6. Keep the ZIP minimal. Expected essential files are `agent.yaml`, `eval_config.yaml`, `configs/sampling.yaml`, and `prompts/system.md`. Use `!include` paths consistent with the official starter and ensure every referenced file exists.
+7. Inspect the official starter's actual agent schema, tool declaration syntax, include paths, and configuration format before finalizing. Do not copy an assumed schema merely because it appears in this prompt. If the current harness contract conflicts with a proposed setting, establish the conflict using the installed schema/compiler or official local files and document it.
+
+SYSTEM PROMPT REQUIREMENTS
+Write a concise, executable workflow prompt grounded in Researcher 2's section F.3. The resulting `prompts/system.md` must:
+
+- Never contain curly brace characters. Avoid all ADK state-template placeholders.
+- Avoid literal shell-command examples in the agent instructions. Describe the action in ordinary prose and make clear it must be performed through the declared `run_command` tool. This reduces the risk of command strings being interpreted as tool names.
+- Avoid undeclared tool names. Never mention `search_similar_code`, `get_code_neighbors`, `get_code_subgraph`, custom tools, skills, or helper agents as available capabilities.
+- Read the task once, identify the symptom and expected behaviour, then use targeted recursive lexical searches for exact identifiers, error strings and parameter names. Empty search results must be reported explicitly as `NO MATCHES`; change the pattern or directory before trying again.
+- Use `read_file` in ranges of no more than 120 lines. Never dump large files, whole repositories, or oversized test output.
+- Reproduce only when cheap and relevant, using at most two tool calls. Create temporary scratch content through `run_command` under `/tmp`; do not use `write_file` for scratch and do not leave scratch files in the repository.
+- Before editing, have a concrete root-cause hypothesis supported by the code. Make the smallest compatible patch. Never modify tests, test configuration, build configuration, harness files, or unrelated files. Do not install dependencies or use the network.
+- Verify the reproduction if one exists and the narrowest relevant existing test or check. Do not run the entire test suite. Limit long commands to about 60 seconds and keep the displayed output small through appropriate output selection.
+- Avoid repeated identical tool calls. If a call returns the same result, change the question, target, pattern, or hypothesis before retrying.
+- If an edit fails twice, re-read the exact lines and reconstruct the edit from the current source. Do not keep retrying stale text.
+- Keep each action purposeful and economical. Approximately 35 calls is a hard exploration checkpoint, not a target; at that point stop broad exploration and submit the best defensible patch unless a short, decisive verification remains.
+- Use short notes after each tool result: one plain sentence, at most 20 words, describing what was learned and the next action. Keep replies tool-oriented and avoid long narration.
+- Submit a plausible patch once a concrete fix exists; if a later code edit changes it, submit the updated patch again. Before the final submission, inspect the diff for stray or scratch files. `get_status` and `submit_patch` may be used as documented by the harness.
+- Continue using tools until the task is genuinely finished. Do not stop after a text-only progress note.
+- Treat tests as evidence, not a guarantee of hidden-test success. Do not claim success when verification failed or was blocked.
+
+PREFLIGHT: DO THE REAL CHECKS THAT THE ENVIRONMENT SUPPORTS
+Before zipping, inspect every input archive you received and record its SHA-256. Do not change those archives.
+
+Run these checks against the candidate:
+A. YAML parsing using a parser that supports the exact `!include` syntax, or a safe local adaptation that preserves and resolves includes.
+B. Confirm the required model appears for every agent; S0 should contain only one agent.
+C. Confirm the six declared tools exactly match the known official registry and there are no undeclared names.
+D. Scan `prompts/system.md` for any curly brace, and scan all included files for unsupported extensions or path traversal.
+E. Ensure all include paths resolve, all ZIP members are relative paths, and `agent.yaml` sits at the ZIP root rather than inside a nested directory.
+F. Confirm the `eval_config.yaml` values are root-level fields and are accepted by the official configuration schema, if available.
+G. Use the actual official compiler path if the required wheels, Python version, harness and compile command are present. The report mentions `validate_directory`, `discover_declared_models`, and `compile_submission`, but verify their real import paths/signatures and invoke them as supported by the installed version. Do not fabricate these commands or claim they ran if unavailable.
+H. Run a fake-model replay through the real harness if the required infrastructure is available; check tool resolution and sampling config. Label this as wiring validation, not model performance.
+I. Inspect the final ZIP's contents, test archive integrity, compute SHA-256, and make sure the two output ZIPs are byte-identical.
+
+REPORTING RULES
+For every check, label PASS, WARN, FAIL, or BLOCKED. Distinguish static ZIP checks, YAML/config checks, official compilation, fake-model replay, real Gemma inference, and hidden-task evaluation. Do not represent one category as another. If official compilation or real inference is impossible, state the exact missing dependency or environment blocker and the command or notebook cell the user should run next.
+
+DO NOT
+- Do not guarantee a score over 0.10.
+- Do not invent a score, benchmark, task pass rate, or root cause for the two Kaggle errors.
+- Do not add more agents, thinking, retrieval, or a large prompt just to make the artifact look sophisticated.
+- Do not use a 60-minute task budget, 8-minute task budget, 16,384 output cap, or 4,096-token thinking budget in S0.
+- Do not include notebook EDA, development data, expected patches, hidden-test data, credentials, or research-only files in the submission ZIP.
+- Do not submit to Kaggle or alter the still-running notebook; only create and validate the local artifact.
+
+FINAL RESPONSE FORMAT
+1. Provide links to both ZIPs and the validation report.
+2. Give a concise manifest of files included in `submission.zip`.
+3. Show the exact SHA-256 and confirm whether the ZIPs are byte-identical.
+4. List the checks and statuses, with exact commands actually executed for any official validation.
+5. List unresolved risks and blockers without minimizing them.
+6. Give a careful Kaggle upload/run sequence that preserves the already-running notebook. Tell the user to wait for the current run's logs before attributing its result to this new candidate.
+7. State clearly that S0 is an evidence-led baseline, not a proven score improvement. S1 (investigator) is a later experiment, only after S0 can be compiled and run successfully.
+
+Start by inspecting the provided files and local harness resources, then implement the ZIP and run the checks. Do not return a plan-only answer.

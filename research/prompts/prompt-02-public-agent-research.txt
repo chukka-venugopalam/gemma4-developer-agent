@@ -1,0 +1,40 @@
+PROMPT 2 — COMPETITIVE INTELLIGENCE / REVERSE-ENGINEER THE BEST PUBLIC AGENTS
+================================================================================
+
+ROLE
+Act as a principal research engineer trying to raise our Gemma 4 Developer Agent Competition score from 0.06 to at least 0.10, with the longer-term goal of beating the public frontier. Own only the public-competitor and state-of-the-art research path. Do not repeat Researcher 1's archive/harness audit or Researcher 3's dataset ablation work.
+
+CORE QUESTION
+What concrete, evidence-supported choices explain why a public agent reaches around 0.10–0.12 while our earlier submissions remain at 0.06, and which of those choices are worth adapting to our submission?
+
+MANDATORY RESEARCH
+1. Start with the current official overview, scoring method, tool registry, global/per-task budgets, model restrictions, and submission requirements. Confirm the current date/version of every source. Score means repository patches that pass validation tests—not localization accuracy, benchmark heuristics, or notebook runtime.
+2. Inspect the public high-scoring work, especially `Black Cat SWE Agent | Pack Instinct` (public page previously reported Best Score 0.12 V10 and earlier versions around 0.10), plus other current public submissions scoring 0.10 or higher and useful lower-scoring controls. Search competition Code, Leaderboard, version histories, public notebook code, comments, outputs, and downloadable files where accessible.
+3. Retrieve and inspect actual code/versions wherever possible. Do not infer architecture from a notebook title, score badge, screenshot, or author prose alone. If source/version history is inaccessible, mark the claim unverified and describe how you attempted access.
+4. Create a comparison matrix covering: single vs multi-agent; prompts and routing; tool call policy; semantic/lexical/graph retrieval; context management; reproduction-before-edit behavior; patch size discipline; tests/verification; failure recovery; time/tool-call budgets; thinking/generation parameters; skills/adapters; repository/domain priors; patch submission behavior; runtime failures and reproducibility.
+5. Trace meaningful score/version changes rather than just copying the top notebook. Identify what changed from prior versions, when score improved or regressed, and the most plausible causal factors. Distinguish observed facts from your inference; public score variation and leaderboard noise are not a controlled ablation.
+6. Read actual harness details before interpreting an architecture. For example, do not recommend free-form natural-language `search_similar_code` queries if the harness expects symbol names. Account for the actual tool implementation and offline behavior.
+7. Propose a shortlist of no more than five high-value design decisions for our single base model `gemma-4-31b-it-qat-w4a16-ct`. Explain the expected mechanism, risks, implementation complexity, confidence, and a falsifiable test for each. No blind cloning and no claim that any design guarantees 0.10.
+
+STRICT RULES
+- Browse the web deeply and cite each factual claim with current, direct sources. Prefer the notebook/code itself over summaries or forum speculation.
+- Keep “confirmed”, “strongly inferred”, and “unknown” separate.
+- Do not claim that public test score reflects private/hidden-set performance without evidence.
+- Do not optimize for impressive architecture diagrams. Simplicity, tool correctness, context survival, and a submitted non-empty patch matter more than the number of agents/tools.
+- Do not spend time debugging our particular Kaggle Error or analyzing the full development dataset; those belong to Researchers 1 and 3.
+
+REQUIRED DELIVERABLE
+Return `PUBLIC_AGENT_RESEARCH.md` with:
+A. Current leaderboard/SOTA snapshot, timestamped.
+B. The five most informative public submissions/versions and why they matter.
+C. A claim-by-claim source ledger, including exact URLs/version IDs and what was verified.
+D. A score/version evolution table for the strongest accessible agent.
+E. A comparison matrix and ranked list of likely score drivers.
+F. Recommended architecture delta for our candidate, written as exact config/prompt-level changes (not vague advice).
+G. A “do not copy” section for techniques that are unverified, fragile, overly costly, or incompatible with the harness.
+H. A test plan to assess whether the recommendations improve actual patch success.
+
+FINAL ACCEPTANCE GATE
+The report is not accepted if it only repeats generic SWE-agent principles or says “use graph tools.” It must establish what current high-scoring public agents actually do, with provenance, and what is still unknown.
+
+================================================================================

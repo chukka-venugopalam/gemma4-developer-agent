@@ -1,0 +1,131 @@
+PROMPT 7 — CONTINUE PROMPT 1: CLOSE THE FORENSIC GAPS WITH LIVE EVIDENCE
+
+ROLE
+You are continuing Mission 1 (submission forensics) for the Google – The Gemma 4 Developer Agent Competition. You are not starting a new architecture or performing generic research. Your previous deliverable was SUBMISSION_FORENSIC_REPORT.md plus preflight_compile.py and submission-VNEXT-INCLUDEFIX-ADDITIVE.zip. Continue from those exact findings and close the highest-priority unknowns.
+
+ATTACHMENTS / INPUTS
+Use the actual files supplied in this conversation/workspace where present:
+- SUBMISSION_FORENSIC_REPORT.md
+- preflight_compile.py
+- submission-VNEXT-INCLUDEFIX-ADDITIVE.zip
+- submission-VNEXT.zip, submission-GRAPH-FUSION-V2.zip, submission.zip / EVIDENCE-V1, submission-GEMMA-HYBRID-V2-ADAPTIVE.zip
+- S0 bundle and GEMMA_S0_PREFLIGHT_PACK.zip from Prompt 6, if present
+- Screenshots and any Kaggle notebook logs the user has supplied
+
+First inventory the files and compute fresh SHA-256 hashes. Never assume a filename identifies the bytes that produced a score. Do not overwrite original files.
+
+MISSION
+Determine, as far as evidence permits:
+1. Which exact uploaded ZIP corresponds to each recent Kaggle submission row.
+2. Whether the two rows marked “Kaggle Error” were platform/scoring-service errors, package/compiler errors, or remain unresolved.
+3. Whether the currently proposed S0 ZIP and the fixed VNEXT additive ZIP compile against the actual competition wheelhouse, rather than only the older third-party harness mirror.
+4. Which candidate, if any, has enough verified evidence to proceed to one carefully controlled user-submitted Kaggle run.
+
+NON-NEGOTIABLE EVIDENCE RULES
+- Do not claim a Kaggle Error cause without that row’s metadata/errorDescription or direct logs. A screenshot alone is insufficient.
+- Do not treat the older swegemma 0.2.7 / adk-submission 0.2.11 mirror as equivalent to the live scorer. The previous report notes possible newer versions (including adk-submission 0.2.12/0.2.13 and swegemma 0.2.10/0.2.11); discover the versions actually available in the current competition wheelhouse.
+- Do not treat static ZIP checks, old-harness compilation, fake-model replay, or custom validator self-tests as official current-harness validation.
+- Clearly distinguish CONFIRMED, INFERRED, UNKNOWN, BLOCKED and NOT TESTED.
+- Do not fabricate command output, Kaggle metadata, scores, hashes, logs, API access, or compiler results.
+- Do not submit anything to Kaggle, click Submit Prediction, spend a daily submission slot, or re-upload an identical archive. This task prepares evidence only.
+- Do not expose Kaggle API tokens, notebook secrets, environment variable values, or credentials. Never print secrets into logs.
+- No architecture redesign, new sub-agent, LoRA, graph retrieval, or prompt expansion unless a concrete diagnosed defect requires a minimal change.
+
+PHASE A — READ THE FORENSIC REPORT AND PRESERVE ITS FINDINGS
+1. Read the complete prior report, especially its Executive Finding, C0 outcome taxonomy, C1 root-cause ranking, E5 validation log, E6 residual risks, G1–G8 checklist, and appendices.
+2. Preserve the confirmed finding that the original submission-VNEXT.zip has two broken relative includes under sub_agents/code_analyzer.yaml and did not compile on the tested older loader.
+3. Preserve that submission-VNEXT-INCLUDEFIX-ADDITIVE.zip compiled on the older copied harness and passed fake-model replay, but has not yet been shown to compile on the live scorer’s current wheels.
+4. Do not generalize that known VNEXT include bug to the two Kaggle Error rows unless metadata maps those rows to that archive and their failure details support it.
+
+PHASE B — GET REAL KAGGLE SUBMISSION METADATA (G1–G3)
+Create and, if authenticated Kaggle API access is available, execute a robust script that records for every relevant submission:
+- ref / submission identifier
+- UTC date/time
+- status
+- publicScore
+- totalBytes
+- fileName
+- errorDescription (if present)
+- all other non-secret fields needed to diagnose absent/unknown properties
+
+Do not assume the API method or field names without checking installed `kaggle` version and actual object keys. Inspect the result object safely. If the one-line command in the previous report fails, adapt the script based on actual error messages. Redact credentials and token-bearing fields. Save machine-readable JSON and a readable Markdown/CSV summary.
+
+Map `totalBytes` to local archive sizes only as an initial association, not as cryptographic proof. Include exact candidate names, byte counts and SHA-256 values, and explicitly flag collisions or ambiguous mappings. The Kaggle API may not expose uploaded hashes; do not claim it does unless the returned schema confirms it.
+
+Refresh submission metadata once more later in the same run if practical and compare status/score changes. If an earlier “Kaggle Error” now has a numeric score, record that fact. Do not wait indefinitely, and do not retry submissions.
+
+If Kaggle credentials are absent, do not stall. Deliver the ready-to-run PowerShell/Python commands and state BLOCKED for live metadata. Explain exactly what the user must execute and which output file to return. Never ask the user to paste their token.
+
+PHASE C — CURRENT OFFICIAL WHEELHOUSE / COMPILER (G4)
+This phase must run inside a fresh Kaggle notebook or other environment where the actual competition wheelhouse is mounted. If that environment is not available to you, build the notebook cells and mark current-scorer compilation BLOCKED; do not imply it ran.
+
+1. Inspect the official Getting Started notebook and the live competition Data tab / wheelhouse files available in the environment. Record the actual source location, wheel filenames, package versions, Python version and relevant dependency versions. Do not infer the current versions from third-party documents.
+2. Confirm the correct official install sequence from the notebook currently provided by Kaggle. Do not invent installation paths or install from the internet. Use only the supplied offline wheels, as intended by the competition.
+3. Inspect `preflight_compile.py` before using it. Determine whether its import paths and APIs support the current wheel versions. If not, adapt a copy; keep the original unchanged and explain every compatibility modification.
+4. Run the official validator and `compile_submission` using the current installed registry/compiler. Prefer the actual official validation functions discovered from the current wheels. Record exact command, exit status, stdout/stderr, package versions and a compact structured verdict.
+5. Test at least:
+   A. the S0 submission ZIP from Prompt 6;
+   B. submission-VNEXT-INCLUDEFIX-ADDITIVE.zip;
+   C. the original VNEXT ZIP as a negative control (expected to fail the known includes if behavior matches the old loader).
+   If time permits, compile EVIDENCE-V1 and HYBRID-V2-ADAPTIVE as comparison controls. Do not spend time on broad architecture exploration.
+6. For every ZIP, check root layout, `!include` resolution, any `config_path`, single declared model, exact declared tools, allowed file extensions, evaluation config schema, and YAML schema under the current compiler. Report each failure with the exact file and exception.
+7. Investigate the thinking-off configuration compatibility issue from the previous report. Inspect the actual current generation resolver/schema or run a configuration-only/fake-model test. Compare supported controls such as `include_thoughts`, `thinking_level`, and `thinking_budget` only where the live schema accepts them. Do not insert a rejected value. State precisely which setting was actually applied or if it remains uncertain.
+8. Ensure `timeout_seconds` is not accidentally so low that it truncates the per-task test verification. Only propose changes after confirming the active semantics on current wheels. Do not casually change the score candidate yet.
+
+PHASE D — TOOL AND CONTROL-FLOW REPLAY
+If the actual current harness supports a fake/scripted model, run one bounded replay on the current harness with synthetic responses and no GPU. Test:
+- agent loads successfully;
+- declared tools resolve;
+- valid tool arguments parse;
+- the issue reaches the root prompt;
+- the root can call a tool and eventually submit a patch;
+- no undeclared tool call occurs;
+- `submit_patch` termination and any post-submit behavior are correctly understood;
+- there are no unresolved include or state-template errors.
+
+Use fake-model replay only for plumbing/control flow. Label it NOT A GEMMA TEST and NOT A SCORE TEST. If no safe current-harness replay is feasible, mark BLOCKED and list the exact missing dependency or API.
+
+PHASE E — DECISION GATE
+Produce a table with one row per candidate and these columns:
+- archive name and SHA-256
+- archive structure PASS/FAIL
+- old-mirror compile result (if known)
+- current-wheel compile result
+- fake-model replay result
+- real Gemma inference result
+- Kaggle row association and evidence strength
+- unresolved risks
+- recommendation: REJECT / HOLD / ELIGIBLE FOR USER-SUBMITTED SMOKE RUN
+
+Eligibility rules:
+- A candidate is not “officially validated” unless it compiled against the current competition wheelhouse.
+- A candidate with a known compile failure is REJECT.
+- A candidate with structural pass but current compile blocked is HOLD, not PASS.
+- Do not choose a score candidate solely because it is simpler or because its archive compiles.
+- Do not promise any score threshold.
+- Do not recommend burning a submission slot if current compile fails or if the corresponding Kaggle error is already shown to be a platform-side error unrelated to the candidate.
+- Only after evidence is assembled, give one recommended candidate and the rationale. The user retains control of any submission.
+
+DELIVERABLES
+Create a new directory and a ZIP named `GEMMA_FORENSICS_FOLLOWUP.zip` containing:
+1. `REPORT.md` — executive findings, evidence tiers, what changed since previous report, root-cause verdict and decision gate.
+2. `fetch_submission_metadata.py` — robust, credential-safe Kaggle API collection script.
+3. `submission_metadata.json` and `submission_metadata.csv` if real data was obtained; otherwise clearly named sample schema only, never synthetic rows that look real.
+4. `candidate_manifest.csv` — filenames, sizes, SHA-256, mapped submission refs if known.
+5. `preflight_compile_current.py` — only if the official current-wheel compiler was actually adapted; document provenance and differences.
+6. `KAGGLE_CURRENT_WHEELHOUSE_PREFLIGHT.ipynb` — ordered notebook cells for wheel discovery, official install, compile, and optional fake replay. If already executed, include actual output; if not, label it RUN-REQUIRED.
+7. `logs/` — real logs only, with secrets redacted. Never create fake logs for tests that were not run.
+8. `RUN_ORDER.md` — exact steps to execute in Kaggle without changing or overwriting the user's currently running submission.
+9. `SHA256SUMS.txt` — hashes of outputs and candidate input archives.
+
+Before packaging, run the supported checks, verify the ZIP opens, check every internal path, and confirm `GEMMA_FORENSICS_FOLLOWUP.zip` exists. If live API or current wheelhouse access is unavailable, still deliver the package with ready-to-run instructions and a prominent BLOCKED status; do not substitute assumed results.
+
+FINAL RESPONSE FORMAT
+1. What is now confirmed.
+2. What is still unknown and why.
+3. Whether the two previous Kaggle Error rows are mapped to exact archives.
+4. Current-wheel compilation status per candidate.
+5. One evidence-based recommended next action.
+6. Link to `GEMMA_FORENSICS_FOLLOWUP.zip` and the standalone `REPORT.md`.
+
+START NOW. Inspect and execute the available parts of the forensic follow-up. Do not return another plan-only report, do not build a new agent architecture, and do not submit to Kaggle.

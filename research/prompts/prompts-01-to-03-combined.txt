@@ -1,0 +1,129 @@
+GEMMA 4 DEVELOPER AGENT — THREE INDEPENDENT DEEP-RESEARCH PROMPTS
+Use one prompt per separate Claude chat/researcher. Attach all relevant ZIPs and the latest Kaggle screenshot to Researcher 1. Do not let the three researchers copy one another's work; each owns a different evidence stream.
+
+================================================================================
+PROMPT 1 — SUBMISSION FORENSICS / WHY KAGGLE SHOWS “KAGGLE ERROR”
+================================================================================
+
+ROLE
+Act as a senior competition-infrastructure engineer and adversarial submission auditor. Your job is to diagnose why two recent submissions for the Google – The Gemma 4 Developer Agent Competition ended with “Kaggle Error”, while earlier submissions scored 0.06 and 0.00. Do not optimize the agent prompt until you separate packaging/compilation failures from inference/runtime failures and Kaggle infrastructure failures.
+
+INPUTS I WILL ATTACH
+- Latest Kaggle Submissions screenshot showing two “Kaggle Error” rows and earlier successful 0.06 / 0.00 rows.
+- submission-VNEXT(1).zip
+- submission-GRAPH-FUSION-V2.zip
+- submission-GEMMA-HYBRID-V2-ADAPTIVE.zip
+- submission-GEMMA-ADAPTIVE-EVIDENCE-V1.zip (new candidate)
+- Any error logs available from Kaggle, if present.
+
+RESEARCH SCOPE
+1. Inspect every file in every ZIP. Do not infer ZIP content from its filename. Check exact archive roots, one-and-only-one root agent config, all nested paths, include resolution, YAML schema, every agent/sub-agent model declaration, tool registry names, generation-config fields, evaluation-budget types/ranges, allowed file extensions, symlinks/path traversal, and every file referenced by `!include` or `agent_tool`.
+2. Verify against current primary sources: official competition rules/overview; current harness/submission contract and starter guide; official organizer/staff discussions; recent reports about submission errors. Search web sources and cite URLs and exact relevant statements. If the harness source is publicly inspectable, check its current code, not only a copied summary.
+3. Explicitly distinguish these outcomes: `Kaggle Error`, `Notebook Threw Exception`, timeout/resource errors, missing output ZIP, valid submission with a numeric score, and patch-validation failures. Explain which stage each outcome most likely represents. Do not assert an archive is the cause merely because the scoring run failed.
+4. Audit tool instructions against actual tool semantics. In particular, establish the correct input form and behavior of `search_similar_code`, `get_code_neighbors`, `get_code_subgraph`, `read_file`, `edit_file`, `run_command`, and `submit_patch`. Identify prompts that encourage invalid arguments or waste tool calls.
+5. If an actual validator/compiler can be executed in the available environment, run it. If it cannot, state exactly what you did validate (e.g. syntax, YAML, includes) and what remains untested. NEVER describe a structural ZIP check as a successful official harness compile or successful Gemma run.
+6. Compare the four candidates and identify the most likely causes of any failure, ranked by evidence. Label each conclusion HIGH / MEDIUM / LOW confidence. Separate a true fatal configuration defect from a possible performance weakness and from an infrastructure-side failure.
+
+STRICT RULES
+- Use up-to-date web research. Prefer official sources, organizer/staff statements, and the canonical harness source.
+- No invented logs, no assumed traceback, no fabricated local test result, no unverified fix.
+- No generic advice such as “check the YAML.” Name exact file, key, and failure mechanism where evidence supports it.
+- Do not spend this task researching leaderboard strategies; Researcher 2 owns that. Do not design a whole new agent architecture; only recommend the smallest safe correction for harness validity.
+
+REQUIRED DELIVERABLE
+Return `SUBMISSION_FORENSIC_REPORT.md` with:
+A. Executive finding in five sentences or fewer.
+B. A table of each ZIP: root config, model consistency, include paths, tool list, evaluation limits, definite defects, potential risks, validations performed.
+C. A ranked root-cause table: hypothesis | supporting evidence | contradicting evidence | confidence | exact next check.
+D. “What the screenshot does and does not prove.”
+E. One recommended ZIP to use today, or a minimal patched ZIP if you can build one safely. Include its SHA-256, exact file tree, and a validation log. Do not modify the candidate silently.
+F. Official/current source links for every nontrivial competition/harness claim.
+G. A checklist of evidence needed from Kaggle submission details if the failure remains ambiguous.
+
+FINAL ACCEPTANCE GATE
+Your report must make clear whether you proved a package defect, proved an inference/runtime defect, or cannot diagnose the precise “Kaggle Error” without server logs. A cautious, evidence-backed “unknown” is better than a confident guess.
+
+================================================================================
+PROMPT 2 — COMPETITIVE INTELLIGENCE / REVERSE-ENGINEER THE BEST PUBLIC AGENTS
+================================================================================
+
+ROLE
+Act as a principal research engineer trying to raise our Gemma 4 Developer Agent Competition score from 0.06 to at least 0.10, with the longer-term goal of beating the public frontier. Own only the public-competitor and state-of-the-art research path. Do not repeat Researcher 1's archive/harness audit or Researcher 3's dataset ablation work.
+
+CORE QUESTION
+What concrete, evidence-supported choices explain why a public agent reaches around 0.10–0.12 while our earlier submissions remain at 0.06, and which of those choices are worth adapting to our submission?
+
+MANDATORY RESEARCH
+1. Start with the current official overview, scoring method, tool registry, global/per-task budgets, model restrictions, and submission requirements. Confirm the current date/version of every source. Score means repository patches that pass validation tests—not localization accuracy, benchmark heuristics, or notebook runtime.
+2. Inspect the public high-scoring work, especially `Black Cat SWE Agent | Pack Instinct` (public page previously reported Best Score 0.12 V10 and earlier versions around 0.10), plus other current public submissions scoring 0.10 or higher and useful lower-scoring controls. Search competition Code, Leaderboard, version histories, public notebook code, comments, outputs, and downloadable files where accessible.
+3. Retrieve and inspect actual code/versions wherever possible. Do not infer architecture from a notebook title, score badge, screenshot, or author prose alone. If source/version history is inaccessible, mark the claim unverified and describe how you attempted access.
+4. Create a comparison matrix covering: single vs multi-agent; prompts and routing; tool call policy; semantic/lexical/graph retrieval; context management; reproduction-before-edit behavior; patch size discipline; tests/verification; failure recovery; time/tool-call budgets; thinking/generation parameters; skills/adapters; repository/domain priors; patch submission behavior; runtime failures and reproducibility.
+5. Trace meaningful score/version changes rather than just copying the top notebook. Identify what changed from prior versions, when score improved or regressed, and the most plausible causal factors. Distinguish observed facts from your inference; public score variation and leaderboard noise are not a controlled ablation.
+6. Read actual harness details before interpreting an architecture. For example, do not recommend free-form natural-language `search_similar_code` queries if the harness expects symbol names. Account for the actual tool implementation and offline behavior.
+7. Propose a shortlist of no more than five high-value design decisions for our single base model `gemma-4-31b-it-qat-w4a16-ct`. Explain the expected mechanism, risks, implementation complexity, confidence, and a falsifiable test for each. No blind cloning and no claim that any design guarantees 0.10.
+
+STRICT RULES
+- Browse the web deeply and cite each factual claim with current, direct sources. Prefer the notebook/code itself over summaries or forum speculation.
+- Keep “confirmed”, “strongly inferred”, and “unknown” separate.
+- Do not claim that public test score reflects private/hidden-set performance without evidence.
+- Do not optimize for impressive architecture diagrams. Simplicity, tool correctness, context survival, and a submitted non-empty patch matter more than the number of agents/tools.
+- Do not spend time debugging our particular Kaggle Error or analyzing the full development dataset; those belong to Researchers 1 and 3.
+
+REQUIRED DELIVERABLE
+Return `PUBLIC_AGENT_RESEARCH.md` with:
+A. Current leaderboard/SOTA snapshot, timestamped.
+B. The five most informative public submissions/versions and why they matter.
+C. A claim-by-claim source ledger, including exact URLs/version IDs and what was verified.
+D. A score/version evolution table for the strongest accessible agent.
+E. A comparison matrix and ranked list of likely score drivers.
+F. Recommended architecture delta for our candidate, written as exact config/prompt-level changes (not vague advice).
+G. A “do not copy” section for techniques that are unverified, fragile, overly costly, or incompatible with the harness.
+H. A test plan to assess whether the recommendations improve actual patch success.
+
+FINAL ACCEPTANCE GATE
+The report is not accepted if it only repeats generic SWE-agent principles or says “use graph tools.” It must establish what current high-scoring public agents actually do, with provenance, and what is still unknown.
+
+================================================================================
+PROMPT 3 — DEVELOPMENT-DATA RESEARCH / REPRODUCIBLE ABLATIONS AND SCORE STRATEGY
+================================================================================
+
+ROLE
+Act as an experimental ML/SWE-benchmark researcher. Own the independent data-driven research path. Investigate the public Gemma 4 Developer Agent development set and design a reproducible way to determine which agent changes improve repository-level patch success. Do not repeat the public-agent reverse engineering (Researcher 2) or submission-runtime audit (Researcher 1).
+
+DATA AND COMPETITION CONTEXT
+The public competition dataset has been reported to contain 129 development tasks across FastAPI, Rich, Requests, and HTTPX, with issue text, reference patches, and test patches available for local research. Verify all details against the current official dataset documentation before relying on them. Do not claim any heuristic localization metric is Gemma's patch-success score.
+
+RESEARCH TASKS
+1. Inspect the official dataset schema and available task fields. Quantify task count by repository, issue type, complexity indicators, test style, patch size, source-module spread, and whether issue descriptions explicitly identify files/symbols. Report the code used to calculate each statistic.
+2. Examine the dataset for leakage risks. Reference fixes/test patches may be used to score evaluation, but must not be copied into the agent prompt or confused with information available at inference time. Design train/dev/held-out splits that keep near-duplicate or same-fix leakage under control if the data supports that analysis.
+3. Build an evaluation proposal that can test whole-agent patch success rather than only location prediction. Prefer the real public harness and its patch verifier when available. If the actual competition runtime/model cannot run locally, say so and provide a practical plan for running reproducible experiments inside an eligible Kaggle environment; do not claim simulated results are true Gemma performance.
+4. Design a small, high-information ablation matrix. Compare at least: disciplined single-agent baseline; adaptive confidence gate; symbol-based semantic/graph escalation; reproduction/trace policy; different per-task budgets; optional investigator vs no investigator. Change one major variable at a time. Keep model, tasks, sampling and verifier fixed where possible.
+5. Define primary metrics: fraction of tasks producing a non-empty patch, patch validation pass rate, valid-patch rate, verified-test pass rate where measurable, time/tool calls per task, skipped/no-patch rate, and failures by repository or task type. Use confidence intervals or repeated evaluations where feasible. Distinguish proxy metrics from official leaderboard score.
+6. Recommend a budget policy for the competition-wide 12-hour limit. Model the trade-off between per-task reasoning time and number of tasks reached. Do not simply set every task to the maximum possible budget. Provide an evidence-based stopping rule for easy tasks and escalation rule for difficult tasks.
+7. Identify the top failure modes likely to keep us at 0.06: wrong localization, edits with no executable evidence, malformed/overlarge patches, test misuse, wrong API details, tool schema misuse, timeouts, no patch submitted, or task starvation. State how each can be measured instead of assumed.
+8. Provide executable lightweight scripts/notebook code for data profiling and result summarization if the data is accessible. Code must be self-contained, deterministic, memory-conscious, and clearly distinguish descriptive analysis from model evaluation. If the dataset is unavailable, list the exact needed input files and produce the experiment design without fabricating statistics.
+
+STRICT RULES
+- Evidence first. No invented counts, scores, results, or claims that local heuristics equal end-to-end agent score.
+- Use primary documentation for dataset/harness schema. Cite factual statements and include source URLs.
+- Do not create a complicated benchmark framework before confirming that the actual harness can run.
+- Do not change the production ZIP or diagnose Kaggle system errors; those are Researcher 1's duties.
+- Do not spend most of the report summarizing high-scoring public agents; Researcher 2 owns that.
+
+REQUIRED DELIVERABLE
+Return `DEVELOPMENT_SET_AND_ABLATION_PLAN.md`, plus scripts or a notebook if feasible, containing:
+A. Verified dataset inventory/schema and source references.
+B. Reproducible dataset-profile tables and code.
+C. Leakage analysis and recommended split/protocol.
+D. An ablation matrix with hypothesis, controlled variable, compute cost, metric, expected failure signal, and decision rule.
+E. A 12-hour budget allocation strategy.
+F. A failure taxonomy and logging schema for each task.
+G. A clear boundary between real measured results, proxy results, and proposed future experiments.
+
+FINAL ACCEPTANCE GATE
+The report must make the next experiment obvious and cheap enough to execute. “Try more prompts” and unverified numerical results fail acceptance.
+
+================================================================================
+CROSS-RESEARCH HANDOFF
+================================================================================
+When all three reports are ready, send them together with the ZIPs to the integrating reviewer. The integrator must reconcile disagreements, not average them. Any proposed change must identify (1) the evidence for it, (2) its expected effect, (3) what it could break, and (4) the cheapest test that could falsify it. Produce one final ZIP only after the forensic report confirms structural validity and the empirical report defines the evaluation status. Never state that a target score is guaranteed.

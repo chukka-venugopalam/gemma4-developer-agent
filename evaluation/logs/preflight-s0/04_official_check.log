@@ -1,0 +1,26 @@
+$ python3 official_harness_check.py /mnt/user-data/outputs/submission.zip
+distributions:
+  adk-submission: not installed
+  swegemma: not installed
+  adk-eval-core: not installed
+  google-adk: not installed
+python 3.12.3
+
+BLOCKED: not importable here: ['adk_submission', 'swegemma', 'adk_eval_core', 'google.adk']. Install the organizers' wheels, then re-run this script.
+Nothing official was executed. No result below this line should be read as a pass.
+exit=3
+
+$ python3 official_harness_check.py --check-budget-prompt /tmp/prompt_s0.txt   (synthetic control)
+captured prompt: /tmp/prompt_s0.txt (161 chars)
+  [PASS] S0 budget line present: time
+  [PASS] S0 budget line present: tool_calls
+  [PASS] S0 budget line present: turns
+exit=0
+
+$ python3 official_harness_check.py --check-budget-prompt /tmp/prompt_default.txt   (synthetic negative control)
+captured prompt: /tmp/prompt_default.txt (163 chars)
+  [FAIL] S0 budget line present: time
+  [FAIL] S0 budget line present: tool_calls
+  [FAIL] S0 budget line present: turns
+  NOTE: harness defaults are visible for ['time', 'tool_calls', 'turns']: eval_config.yaml was probably NOT applied (check its layout: documented layout nests the four keys under `evaluation:`).
+exit=1

@@ -1,0 +1,83 @@
+PROMPT 6 — OFFICIAL HARNESS GATE FOR THE S0 BASELINE
+
+Role: You are a careful evaluation-infrastructure engineer for the Google – The Gemma 4 Developer Agent Competition. The task is to validate the existing S0 artifact, not to design another agent.
+
+ATTACHMENTS
+- gemma_reserach2_next.zip (contains submission.zip and submission-GEMMA-S0-BASELINE.zip)
+- PUBLIC_AGENT_RESEARCH.md
+- Previous successful 0.06 submission ZIP, if available
+- Latest failed submission ZIP and Kaggle error logs/screenshots, if available
+- Official competition starter notebook and mounted HARNESS_README.md, if available
+
+CONTEXT
+The two ZIPs inside gemma_reserach2_next.zip are byte-identical S0 packages. Their shared SHA-256 is:
+359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b
+
+The current candidate contains four files:
+- agent.yaml
+- eval_config.yaml
+- configs/sampling.yaml
+- prompts/system.md
+
+It uses the required Gemma base model, one root agent, six built-in tools, thinking disabled, max_output_tokens 3072, and an intended per-task budget of 5 minutes / 50 tool calls / 100 turns / 300-second command timeout.
+
+IMPORTANT CORRECTION TO THE PRIOR PROMPT
+Do NOT change eval_config.yaml merely because its fields are nested under `evaluation:`. The published harness guide documents this wrapper, and the supplied S0 ZIP follows it. Verify against the actual mounted competition HARNESS_README.md and installed harness version. Likewise, omission of `agent_class` is allowed if the current schema defaults it to LlmAgent. Do not treat either item as a confirmed defect without contradictory primary evidence.
+
+PRIMARY OBJECTIVE
+Establish whether this exact S0 ZIP passes the actual available official validation and compilation path. Then test wiring with a fake/scripted model if supported. Do not claim real Gemma execution unless it actually ran. Do not make a Kaggle competition submission.
+
+PHASE 1 — REPRODUCIBLE ARCHIVE AUDIT
+1. Inspect both nested ZIP files and confirm whether they are byte-identical.
+2. List every path, byte count, and SHA-256. Check ZIP integrity, path traversal, absolute paths, supported extensions, and whether agent.yaml is at the archive root.
+3. Parse every YAML file using the real harness include loader where available. A generic YAML parse is not sufficient for !include files.
+4. Verify all include paths resolve within the archive.
+5. Check the actual required model name and every declared tool against the registry.
+6. Confirm `prompts/system.md` contains no curly braces and contains no undeclared tool names.
+7. Confirm eval_config.yaml is interpreted with the actual schema. Verify the configured limit values are actually loaded, not merely syntactically present.
+8. Record the installed Python version and versions/locations of swegemma, adk-submission, google-adk, adk-eval-core, and any validation/compiler package that exists.
+
+PHASE 2 — FIND AND RUN THE REAL OFFICIAL VALIDATOR/COMPILER
+1. Inspect the mounted competition input, especially HARNESS_README.md, wheels/, sample_submission/, and the official starter notebook. Do not assume the current working directory or a previous version of a package.
+2. Inspect actual `--help`, module exports, function signatures, and the official starter's code before invoking any command.
+3. Run the genuine official validation and compile steps supported by the mounted wheelhouse/environment. Use only provided wheels and documented offline installation methods; do not access the network or install arbitrary packages.
+4. Capture exact commands, stdout/stderr, exit codes, package versions, and results.
+5. If a compiler function such as `validate_directory`, `discover_declared_models`, or `compile_submission` is present, inspect its real signature and call it properly. Do not invent a CLI or assume a function exists.
+6. If the official compiler cannot run in the current environment, do not label the candidate as officially validated. Produce exact notebook cells that run it in the supported Kaggle environment, using the supplied competition wheelhouse and source files.
+
+PHASE 3 — SCRIPTED / FAKE-MODEL REPLAY
+If the actual harness supports a fake or scripted model, run one bounded replay that checks:
+- the six declared tools resolve;
+- the prompt and sampling config are loaded;
+- `eval_config.yaml` is applied and the four limits are active;
+- tool-call schemas/arguments are encoded as expected;
+- no undeclared tool is requested;
+- a patch can be submitted and extracted through the official path.
+
+Use only the documented fake-model mechanism. Do not invent one. A fake-model replay validates wiring, not model intelligence. If unavailable, mark it BLOCKED and explain the exact reason.
+
+PHASE 4 — OPTIONAL ONE-TASK GEMMA SMOKE TEST
+Run this only if the real competition model and official runtime are already available and there is sufficient time. Use a public development task, a fixed task identifier, and the existing S0 ZIP. Apply explicit limits so the test cannot become unbounded. Do not expose reference patches, test patches, hidden answers, or expected diffs to the agent. Save the tool trace, patch, verifier outcome, duration, and error logs.
+
+Do not run all 129 tasks. Do not start an expensive GPU run simply to create the appearance of validation. If real Gemma inference cannot run here, mark it BLOCKED and provide the exact safe Kaggle notebook steps to run it.
+
+PHASE 5 — CHANGE POLICY
+- Do not redesign prompts, add a sub-agent, add graph tools, increase output tokens, enable thinking, or add LoRA during this task.
+- Do not alter the S0 ZIP unless a reproducible failure proves a concrete defect.
+- If a defect is found, make the smallest possible correction, rebuild the ZIP, update its hash, and rerun every relevant check.
+- Keep validation scripts, reports, notebooks, and logs OUTSIDE the competition submission.zip. The final submission archive should contain only required submission files.
+- Never overwrite previous candidates or the notebook version currently running in Kaggle.
+
+DELIVERABLES
+Create:
+1. `submission.zip` — the exact validated S0 candidate, unless a confirmed defect required a documented correction.
+2. `GEMMA_S0_PREFLIGHT_REPORT.md` — a concise evidence-backed report with PASS/WARN/FAIL/BLOCKED per check; exact versions and commands; logs or relevant excerpts; current ZIP hash; confirmed issues versus hypotheses; whether official compilation actually passed; and whether real inference ran.
+3. `GEMMA_S0_PREFLIGHT_PACK.zip` — contains the candidate ZIP, report, preflight scripts, and any notebook/cells needed to finish blocked checks in Kaggle. Do not place this outer diagnostics package into Kaggle as the competition submission.
+4. `GEMMA_S0_KAGGLE_RUN_ORDER.md` — exact notebook cell order, including where to mount competition input, validate configuration, compile, run the bounded smoke test, save output artifacts, and stop before any competition submission.
+
+FINAL RESPONSE FORMAT
+Start with one decision: `SAFE TO TRY`, `NOT READY`, or `BLOCKED — OFFICIAL COMPILER UNAVAILABLE`.
+Then state what was actually run and what remains unverified. Provide the exact downloadable paths, SHA-256, and the next single action.
+Do not claim the S0 package will score above 0.06 or 0.10. Do not claim either historical Kaggle Error is fixed unless its cause has been proven and the relevant check has passed.
+
+Begin now. Inspect the attachments, run everything possible in the available environment, and deliver artifacts—not another research-only plan.

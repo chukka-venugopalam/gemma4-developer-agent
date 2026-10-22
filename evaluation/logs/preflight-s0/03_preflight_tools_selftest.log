@@ -1,0 +1,19 @@
+[PASS] classify nested
+[PASS] classify flat
+[PASS] classify other
+[PASS] sample nested -> MATCH
+[PASS] sample flat -> MISMATCH
+[PASS] sample missing -> BLOCKED
+[PASS] AST extraction finds the loader
+[PASS] AST extraction detects `evaluation` key
+[PASS] AST extraction returns None for a missing function
+[PASS] official file was NOT executed
+[PASS] first user message extracted
+[PASS] undeclared tool detected
+[PASS] calls after first submit_patch counted
+[PASS] help scan finds a stub option
+[PASS] help scan quiet on plain help
+[PASS] inventory finds README, tasks, wheels, sample
+[PASS] inventory reports a missing root
+[PASS] safe_extract refuses traversal
+selftest: ALL PASS

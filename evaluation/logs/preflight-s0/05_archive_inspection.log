@@ -1,0 +1,13 @@
+$ sha256sum /mnt/user-data/outputs/submission.zip /mnt/user-data/outputs/submission-GEMMA-S0-BASELINE.zip
+359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b  /mnt/user-data/outputs/submission.zip
+359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b  /mnt/user-data/outputs/submission-GEMMA-S0-BASELINE.zip
+quoted by the task statement: 359a50986e9c23926cd99da853ad30fa399291947a9e9fc68b5906339156cf1b
+$ cmp submission.zip submission-GEMMA-S0-BASELINE.zip
+IDENTICAL
+$ python3 -m zipfile -t submission.zip
+Done testing
+path | bytes | sha256
+agent.yaml | 337 | 60380de676031d4c6d0c28ed0251ac9a2d1a3f2a4a838e17f32087c17fc6747c
+configs/sampling.yaml | 106 | b5c37e37fc280f333b1e8f17c003701b373a5cd06bd754cc6c959c3df9ee151a
+eval_config.yaml | 95 | 0f61b64a3879b25e9731b1de500a60a0f99cd329cc359466c8a7e60473e6f887
+prompts/system.md | 3043 | 03ec8aa8c16a8b6506be5ef5f08ff43b7252092bb9a37ef2d2468486ea78bfd1

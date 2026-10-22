@@ -1,11 +1,12 @@
 agent_class: LlmAgent
-name: gemma_swe_pack_graph_adaptive
-model: gemma-4-31b-it-qat-w4a16-ct
+name: gemma_budget_aware_swe_v2
 description: >
-  Adaptive SWE repair agent combining evidence-first localization, semantic and
-  graph code intelligence, an optional read-only investigator for hard cases,
-  minimal compatible patches, and layered verification.
+  Budget-aware single-agent SWE repair with lexical-first localization,
+  evidence-gated edits, optional symbol-grounded graph inspection,
+  targeted verification, and a minimal final patch.
+model: gemma-4-31b-it-qat-w4a16-ct
 instruction: !include prompts/system.md
+generate_content_config: !include configs/sampling.yaml
 tools:
   - run_command
   - read_file
@@ -13,10 +14,6 @@ tools:
   - write_file
   - get_status
   - submit_patch
-  - search_similar_code
   - get_code_neighbors
+  - search_similar_code
   - get_code_subgraph
-  - agent_tool:
-      config_path: sub_agents/investigator.yaml
-      skip_summarization: true
-generate_content_config: !include configs/sampling.yaml

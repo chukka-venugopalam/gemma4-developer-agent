@@ -1,0 +1,47 @@
+GEMMA 4 DEVELOPER AGENT — TODAY'S CANDIDATE VALIDATION
+Date: 2026-10-10
+Candidate: submission-2026-10-10.zip
+SHA-256: d2337f38b79d104125d8ea5f940ce58e0c8e726e470bbc97f6ea925cd24226a8
+
+STATUS
+PASS — ZIP archive integrity (zipfile.testzip returned None).
+PASS — exactly one root-level agent.yaml.
+PASS — YAML parser accepted the root configuration, sampling configuration, and evaluation configuration.
+PASS — local !include targets exist and resolve inside the archive.
+PASS — model name matches required competition model: gemma-4-31b-it-qat-w4a16-ct.
+PASS — all nine declared tool names are listed in the public harness guide.
+PASS — archive paths contain no absolute paths or .. traversal components.
+PASS — archive contains only .yaml and .md files.
+PASS — sampling configuration values use documented fields.
+PASS — evaluation budget fields use documented names and sane positive limits.
+
+CANDIDATE CHANGES
+- One root LlmAgent only; no sub-agent compile/delegation dependency.
+- All nine documented tools retained, but graph/semantic retrieval is conditional on uncertainty.
+- Prompt explicitly specifies correct argument types for read_file and graph tools.
+- search_similar_code is limited to real symbols/code identifiers, following the public harness documentation.
+- Per-task ceiling raised to 15 minutes / 80 tool calls / 240 turns to permit deeper repairs without removing the 12-hour global competition budget.
+- max_output_tokens 16384 + thinking_budget 4096 follows the public harness guide's warning about tool-call truncation at generation limits.
+- No LoRA adapters included; there is no verified evidence that the available adapters improve this agent.
+
+NOT VERIFIED
+- Official Kaggle compilation: not run from this container.
+- Kaggle GPU/vLLM startup: not run.
+- Real Gemma inference: not run.
+- Real development-task patch evaluation: not run.
+- Public score or hidden-test score: unknown.
+
+IMPORTANT KAGGLE WORKFLOW RISK
+Recent public competition discussions document cases where submissions failed because the submitted notebook did not have a generated submission.zip output at submit time, and cases where prompt-only changes ended in notebook exceptions during a reported harness/tool issue. Therefore a valid ZIP cannot guarantee a successful Kaggle run. Keep the existing running submission untouched. Use a separate notebook/version for this candidate, execute it to completion, verify the output artifact named submission.zip exists, then save/commit that successful version before submitting it. If it errors, inspect the notebook logs first instead of changing the prompt blindly.
+
+SOURCES CHECKED
+Official competition overview and archive contract:
+https://www.kaggle.com/competitions/gemma-4-developer-agent/overview
+Public detailed harness guide:
+https://github.com/Strider221B/gemma4_dev_agent/blob/main/data/HARNESS_README.md
+Kaggle discussion — output-file / submission workflow errors:
+https://www.kaggle.com/competitions/gemma-4-developer-agent/discussion/743683
+Kaggle discussion — prompt-only change / notebook exception and read_file issue:
+https://www.kaggle.com/competitions/gemma-4-developer-agent/discussion/744805
+Kaggle discussion — reasoning/thought forwarding compatibility issue; staff said a harness-side patch was incoming/current wheelhouse:
+https://www.kaggle.com/competitions/gemma-4-developer-agent/discussion/744354

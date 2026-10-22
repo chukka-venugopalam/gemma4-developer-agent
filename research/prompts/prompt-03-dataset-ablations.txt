@@ -1,0 +1,40 @@
+PROMPT 3 — DEVELOPMENT-DATA RESEARCH / REPRODUCIBLE ABLATIONS AND SCORE STRATEGY
+================================================================================
+
+ROLE
+Act as an experimental ML/SWE-benchmark researcher. Own the independent data-driven research path. Investigate the public Gemma 4 Developer Agent development set and design a reproducible way to determine which agent changes improve repository-level patch success. Do not repeat the public-agent reverse engineering (Researcher 2) or submission-runtime audit (Researcher 1).
+
+DATA AND COMPETITION CONTEXT
+The public competition dataset has been reported to contain 129 development tasks across FastAPI, Rich, Requests, and HTTPX, with issue text, reference patches, and test patches available for local research. Verify all details against the current official dataset documentation before relying on them. Do not claim any heuristic localization metric is Gemma's patch-success score.
+
+RESEARCH TASKS
+1. Inspect the official dataset schema and available task fields. Quantify task count by repository, issue type, complexity indicators, test style, patch size, source-module spread, and whether issue descriptions explicitly identify files/symbols. Report the code used to calculate each statistic.
+2. Examine the dataset for leakage risks. Reference fixes/test patches may be used to score evaluation, but must not be copied into the agent prompt or confused with information available at inference time. Design train/dev/held-out splits that keep near-duplicate or same-fix leakage under control if the data supports that analysis.
+3. Build an evaluation proposal that can test whole-agent patch success rather than only location prediction. Prefer the real public harness and its patch verifier when available. If the actual competition runtime/model cannot run locally, say so and provide a practical plan for running reproducible experiments inside an eligible Kaggle environment; do not claim simulated results are true Gemma performance.
+4. Design a small, high-information ablation matrix. Compare at least: disciplined single-agent baseline; adaptive confidence gate; symbol-based semantic/graph escalation; reproduction/trace policy; different per-task budgets; optional investigator vs no investigator. Change one major variable at a time. Keep model, tasks, sampling and verifier fixed where possible.
+5. Define primary metrics: fraction of tasks producing a non-empty patch, patch validation pass rate, valid-patch rate, verified-test pass rate where measurable, time/tool calls per task, skipped/no-patch rate, and failures by repository or task type. Use confidence intervals or repeated evaluations where feasible. Distinguish proxy metrics from official leaderboard score.
+6. Recommend a budget policy for the competition-wide 12-hour limit. Model the trade-off between per-task reasoning time and number of tasks reached. Do not simply set every task to the maximum possible budget. Provide an evidence-based stopping rule for easy tasks and escalation rule for difficult tasks.
+7. Identify the top failure modes likely to keep us at 0.06: wrong localization, edits with no executable evidence, malformed/overlarge patches, test misuse, wrong API details, tool schema misuse, timeouts, no patch submitted, or task starvation. State how each can be measured instead of assumed.
+8. Provide executable lightweight scripts/notebook code for data profiling and result summarization if the data is accessible. Code must be self-contained, deterministic, memory-conscious, and clearly distinguish descriptive analysis from model evaluation. If the dataset is unavailable, list the exact needed input files and produce the experiment design without fabricating statistics.
+
+STRICT RULES
+- Evidence first. No invented counts, scores, results, or claims that local heuristics equal end-to-end agent score.
+- Use primary documentation for dataset/harness schema. Cite factual statements and include source URLs.
+- Do not create a complicated benchmark framework before confirming that the actual harness can run.
+- Do not change the production ZIP or diagnose Kaggle system errors; those are Researcher 1's duties.
+- Do not spend most of the report summarizing high-scoring public agents; Researcher 2 owns that.
+
+REQUIRED DELIVERABLE
+Return `DEVELOPMENT_SET_AND_ABLATION_PLAN.md`, plus scripts or a notebook if feasible, containing:
+A. Verified dataset inventory/schema and source references.
+B. Reproducible dataset-profile tables and code.
+C. Leakage analysis and recommended split/protocol.
+D. An ablation matrix with hypothesis, controlled variable, compute cost, metric, expected failure signal, and decision rule.
+E. A 12-hour budget allocation strategy.
+F. A failure taxonomy and logging schema for each task.
+G. A clear boundary between real measured results, proxy results, and proposed future experiments.
+
+FINAL ACCEPTANCE GATE
+The report must make the next experiment obvious and cheap enough to execute. “Try more prompts” and unverified numerical results fail acceptance.
+
+================================================================================

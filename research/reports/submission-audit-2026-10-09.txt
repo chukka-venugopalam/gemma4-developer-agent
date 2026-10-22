@@ -1,0 +1,38 @@
+GEMMA SUBMISSION CANDIDATE AUDIT — 2026-10-09
+
+Files actually inspected:
+- submission-VNEXT(1).zip
+- submission-GRAPH-FUSION-V2.zip
+- submission-GEMMA-HYBRID-V2-ADAPTIVE.zip
+- newly built submission-GEMMA-ADAPTIVE-EVIDENCE-V1.zip
+
+Findings from uploaded candidate ZIPs
+1. All three uploaded archives have exactly one root agent config and no unsafe archive paths. Their referenced include files exist and their YAML parses under a local include-aware YAML check.
+2. VNEXT has a 4.5-minute per-task budget / 40 tool calls, an investigator sub-agent, and a 120-second command timeout. That is constrained and more complex, but it is not by itself proof of the Kaggle Error.
+3. GRAPH-FUSION-V2 has a long prompt that recommends natural-language semantic queries. The published harness guide says `search_similar_code` resolves symbol names against graph/embedding node keys and recommends symbols rather than free-form natural-language sentences. This is a likely tool-usage weakness, not an archive syntax failure.
+4. GEMMA-HYBRID-V2-ADAPTIVE correctly keeps a single root agent and 12-minute / 100-call capacity, but it also tells the agent to query `search_similar_code` with behavior words/short code fragments. That advice should be corrected to known symbols/modules.
+5. None of the uploaded archives has been compiled with the actual competition's official evaluator in this local environment, and no real Gemma task was run. Therefore the audit cannot establish that any archive will score or identify the exact backend reason for “Kaggle Error”.
+
+New candidate built
+- File: submission-GEMMA-ADAPTIVE-EVIDENCE-V1.zip
+- Upload-friendly copy: submission.zip
+- SHA-256: 46e455c81d594b9532cd51f142bc7482020293514b36d6a539ecff21edc67343
+- Files: agent.yaml; configs/sampling.yaml; eval_config.yaml; prompts/system.md
+- Root agent: LlmAgent
+- Required model: gemma-4-31b-it-qat-w4a16-ct
+- Tools: all nine documented built-in tools
+- Budget: timeout_seconds=300; max_tool_calls=60; max_time_minutes=8; max_turns=120
+- Sampling: temperature .2; top_p .95; top_k 40; max_output_tokens 8192; thinking_budget 4096; include_thoughts true
+
+Checks that passed
+- Exactly one root config.
+- YAML parses with include resolution.
+- All `!include` targets exist within the ZIP.
+- Required model is consistent.
+- Tool names are from the documented built-in registry.
+- `eval_config.yaml` is present and contains bounded positive limits.
+- No absolute/traversal paths or disallowed file types.
+- No sub-agent dependency or adapters.
+
+Important limitation
+This is a structural and harness-contract audit only. It is not an official compile, model inference run, end-to-end Kaggle validation, or score prediction. The UI label “Kaggle Error” alone does not expose the underlying traceback. Obtain the submission details/logs or an organizer confirmation before attributing the last two failures to a specific file. Recent Kaggle competition discussions also report some system-side submission errors, so infrastructure failure remains a live possibility.

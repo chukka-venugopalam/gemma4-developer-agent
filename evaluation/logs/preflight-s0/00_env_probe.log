@@ -1,0 +1,32 @@
+# environment probe 2026-10-18T04:18:35Z
+$ python3 --version
+Python 3.12.3
+$ pip list | grep -i -E "^(pyyaml|google-adk|adk-submission|swegemma|adk-eval-core|litellm|vllm|pydantic) "
+PyYAML                     6.0.3
+$ python3 - (import probes)
+IMPORT OK   yaml
+IMPORT FAIL google.adk ModuleNotFoundError
+IMPORT FAIL adk_submission ModuleNotFoundError
+IMPORT FAIL swegemma ModuleNotFoundError
+IMPORT FAIL adk_eval_core ModuleNotFoundError
+IMPORT FAIL litellm ModuleNotFoundError
+IMPORT FAIL vllm ModuleNotFoundError
+IMPORT FAIL pydantic ModuleNotFoundError
+$ which swegemma kaggle nvidia-smi docker
+(none of swegemma, kaggle, nvidia-smi, docker found)
+$ ls -laR /mnt/user-data/uploads
+/mnt/user-data/uploads:
+total 12
+drwxr-xr-x 1 claude ubuntu    0 Oct 18 04:15 .
+drwxr-xr-x 5 root   root   4096 Oct 10 08:19 ..
+-rw-r--r-- 1 claude ubuntu 4792 Oct  9 12:56 GEMMA_RESEARCH_PROMPT_2_PUBLIC_SOTA.txt
+$ find /mnt/attach /mnt/transcripts /mnt/user-data/tool_results -type f
+(end)
+$ find / ( -iname *gemma_reserach2_next* -o -iname *swegemma* -o -iname *adk_submission* -o -iname *adk-submission* -o -iname *adk_eval_core* -o -iname *wheelhouse* -o -iname HARNESS_README* -o -iname sample_submission* -o -iname *.ipynb ) -not -path /proc/* -not -path /sys/* -not -path /home/claude/* -not -path /tmp/* -not -path /mnt/user-data/outputs/* 2>/dev/null
+(end)
+$ ls /kaggle
+ls: cannot access '/kaggle': No such file or directory
+$ network probe
+urllib.error.URLError: <urlopen error [Errno -2] Name or service not known>
+$ date -u
+Sun Oct 18 04:19:08 UTC 2026
