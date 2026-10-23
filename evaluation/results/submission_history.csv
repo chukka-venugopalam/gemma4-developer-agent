@@ -1,0 +1,9 @@
+observed_on,relative_label,submission_ref,status,public_score,archive_sha256,notebook_version,source,notes
+2026-10-23,23m ago in screenshot,unknown,Notebook Threw Exception,,unknown,unknown,cropped screenshot research/evidence/screenshots/2026-10-23-notebook-threw-exception.png,Kaggle describes unhandled notebook error; traceback absent. Exact ZIP attribution unknown.
+2026-10-17,2d ago in screenshot,unknown,Succeeded,0.03,unknown,unknown,cropped screenshot research/evidence/screenshots/2026-10-17-submission-history-score-0-03.png,Score screenshot; exact ZIP attribution unknown. Date is screenshot-observation estimate.
+2026-10-17,6d ago in screenshot,unknown,Notebook Timeout,,unknown,unknown,same screenshot,A notebook timeout shown; exact ZIP attribution and error logs unknown.
+2026-10-17,8d ago in screenshot,unknown,Notebook Timeout,,unknown,unknown,same screenshot,A second notebook timeout shown; exact ZIP attribution and error logs unknown.
+2026-10-17,9d ago in screenshot,unknown,Kaggle Error,,unknown,unknown,same screenshot,Kaggle Error label; do not conflate with Notebook Threw Exception.
+2026-10-07,2d ago in screenshot,unknown,Succeeded,0.06,unknown,unknown,Screenshot 2026-10-07 210034.png (historical observation),Exact uploaded ZIP not mapped.
+2026-10-07,3d ago in screenshot,unknown,Succeeded,0.06,unknown,unknown,Screenshot 2026-10-07 210034.png (historical observation),Exact uploaded ZIP not mapped.
+2026-10-07,4d ago in screenshot,unknown,Succeeded,0.00,unknown,unknown,Screenshot 2026-10-07 210034.png (historical observation),Exact uploaded ZIP not mapped.

@@ -1,1 +1,0 @@
-experiment_id,date,candidate_sha256,question,task_set,seed,controlled_change,official_harness_version,python_version,real_model,task_count,patch_nonempty_rate,resolved_count,resolved_rate,median_duration_sec,p95_duration_sec,invalid_tool_calls,repeated_call_share,context_overflows,timeout_count,patch_pollution_count,status,log_path,notes

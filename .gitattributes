@@ -1,10 +1,1 @@
-* text=auto eol=lf
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.zip binary
-*.safetensors binary
-*.ipynb text eol=lf
-
-# Preserve raw terminal captures; ignore their original end-of-line whitespace in diff checks.
-research/raw/** whitespace=-blank-at-eol
+research/raw/*.txt whitespace=cr-at-eol,-blank-at-eol

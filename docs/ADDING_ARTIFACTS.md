@@ -1,49 +1,35 @@
-# Adding Research, Submission ZIPs, and Evaluation Results
+# Adding research, submissions, and evaluation results
 
-This workflow is designed to avoid losing prior artifacts and to keep new additions easy to find.
+Keep source code and evidence separate. Never overwrite a historical candidate: add a new dated artifact and update the ledgers.
 
 ## Add a research report
 
-```powershell
-python tools/register_artifact.py --kind research --source C:\path\to\report.md --date 2026-10-23 --label "prompt-8-smoke-test" --status received --notes "Claude output; official compiler status is recorded in report"
-```
+1. Save the report under `research/reports/` using `YYYY-MM-DD-short-topic.md`.
+2. Include source URLs, observation date, method, confidence/evidence status, and what could not be verified.
+3. Preserve the original raw ZIP, log, or external artifact under `research/bundles/` when appropriate and legally redistributable.
+4. Update `docs/STATUS_AND_NEXT_STEPS.md` if the decision changes.
 
-The tool copies the file into `research/reports/`, calculates SHA-256, and adds a row to `research/artifact_manifest.csv`. If the exact bytes are already registered, it will not create a duplicate. Preserve the original prompt separately in `research/prompts/` when applicable.
+## Add a submission candidate
 
-## Add a prompt
+1. Edit the canonical source in `submission/`.
+2. Run `python tools/validate_submission.py` and `python tools/build_submission.py`.
+3. Copy the generated archive into `submissions/archive/submission-YYYY-MM-DD-short-name.zip`.
+4. Run `python tools/register_artifact.py --kind submission --source submissions/archive/submission-YYYY-MM-DD-short-name.zip --date YYYY-MM-DD --title "Short name" --status "built; not officially compiled"`.
+5. Keep the exact SHA-256, bytes, source commit, configuration, validation evidence, and model version in `submissions/manifest.csv` or the experiment record.
 
-```powershell
-python tools/register_artifact.py --kind prompt --source C:\path\to\prompt.txt --date 2026-10-23 --label "prompt-8-current-harness-smoke" --notes "Next bounded official preflight"
-```
+## Record a Kaggle result
 
-## Add a candidate submission ZIP
+Add a row to `evaluation/results/submission_history.csv`. Include the observation date, Kaggle ref if available, status, score, notebook version, local ZIP hash, and log path. If the hash or mapping is not exposed, write `unknown`, not an inferred match. Do not assign a numeric score to errors/timeouts.
 
-```powershell
-python tools/register_artifact.py --kind submission --source C:\path\to\submission.zip --date 2026-10-23 --label "budget-aware-v3" --status built-not-submitted --notes "Static checks only; official compile not run"
-```
+## Evidence labels
 
-The tool rejects non-ZIPs, corrupt archives, and ZIPs without a root-level `agent.yaml`. It records hash, bytes, member count, source alias, and notes in `submissions/manifest.csv`. It does not submit to Kaggle or claim official compatibility.
+- `STATIC_PASS`: structure and local checks only.
+- `OFFICIAL_COMPILE_PASS`: current official compiler accepted the exact archive.
+- `FAKE_REPLAY_PASS`: wiring works with scripted responses; not a model-quality result.
+- `GEMMA_SMOKE_PASS`: real inference ran on a stated task set; not a leaderboard score.
+- `HOSTED_SCORED`: Kaggle published a score for the recorded submission.
+- `BLOCKED` / `UNKNOWN`: evidence is unavailable.
 
-## Record a Kaggle outcome
+## Before committing
 
-After the submission finishes, append a new row to `evaluation/results/score_observations.csv`. Capture the Kaggle submission reference, exact artifact SHA-256, date/time, status, score, and error description if available. Leave `candidate_sha256` blank when exact linkage cannot be established. Use a new row; do not overwrite a previous run.
-
-For results from a controlled experiment, also fill `evaluation/templates/experiment_record.csv` or append to `evaluation/results/experiment_registry.csv`, keeping candidate and harness versions fixed.
-
-## Before a public push
-
-1. Run `python tools/check_repo.py`.
-2. Run `python -m unittest discover -s tests -v`.
-3. Review `docs/DATA_POLICY.md`.
-4. Inspect raw terminal dumps, screenshots, notebook outputs and original bundles for secrets or data whose redistribution may be disallowed.
-5. Review `git status` before the first commit.
-
-## Final repository checks
-
-After adding files or changing documentation, run:
-
-```powershell
-python tools/update_build_manifest.py
-python tools/check_repo.py
-python -m unittest discover -s tests -v
-```
+Run `python tools/check_repo.py`, `python -m unittest discover -s tests -v`, `python tools/validate_submission.py`, and inspect `git diff --check` plus the candidate archive manifest. Keep credentials and private keys out of the repository.

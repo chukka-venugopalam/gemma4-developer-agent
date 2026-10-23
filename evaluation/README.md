@@ -1,10 +1,5 @@
-# Evaluation Registry
+# Evaluation records
 
-This folder separates **real evaluations** from static checks and planning.
+Use `evaluation/results/submission_history.csv` to track hosted Kaggle status and score. Use exact ZIP hashes wherever available. The current screenshot-only records are explicitly unattributed; they must not be joined to a candidate solely by date.
 
-- `results/score_observations.csv`: screenshot-derived statuses/scores; archive hashes are left blank unless confirmed.
-- `results/experiment_registry.csv`: planned and completed experiments with evidence/status.
-- `templates/`: columns/schema for adding future observations.
-- `logs/`: captured preflight outputs. Logs from static/synthetic tests are labelled as such.
-
-No current-harness Gemma execution is recorded as complete at repository assembly date.
+Store local run configs in `evaluation/configs/`, metrics in `evaluation/metrics/`, and per-task traces/results in `evaluation/results/` or a dated subdirectory. Do not store hidden tests or private patches. Record model, runtime/wheel versions, task IDs/split, seeds, limits, and wall times for each experiment.

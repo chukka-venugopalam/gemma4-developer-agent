@@ -8,29 +8,16 @@ venv/
 # Jupyter
 .ipynb_checkpoints/
 
-# Secrets / credentials
+# Generated build output
+/dist/
+build/
+*.log
+
+# Never commit credentials
 .env
 .env.*
 !.env.example
-*.pem
-*.key
-kaggle.json
+.kaggle/
 
-# Generated outputs
-/dist/*.zip
-/build/
-*.tmp
-
-# Local data / models (never commit private/hidden evaluation data)
-local_data/
-private_data/
-model_cache/
-*.gguf
-*.pt
-*.pth
-
-# OS/editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
+# Weights/large runtime artifacts are not stored by default
+*.safetensors

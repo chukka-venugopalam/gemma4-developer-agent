@@ -1,0 +1,31 @@
+{
+  "experiment_id": "E-2026-10-23-budget-fit-inspired-v3",
+  "hypothesis": "A bounded-reasoning single agent with a 28-call cap will reduce long repeat-call streaks while retaining enough time for root-cause inspection and verification.",
+  "model": "gemma-4-31b-it-qat-w4a16-ct",
+  "temperature": 0.2,
+  "top_p": 0.95,
+  "top_k": 40,
+  "max_output_tokens": 8192,
+  "thinking_budget": 4096,
+  "include_thoughts": true,
+  "max_tool_calls": 28,
+  "max_time_minutes": 8,
+  "max_turns": 100,
+  "timeout_seconds": 300,
+  "status": "built; static checks only; official compile and Gemma smoke test not run",
+  "primary_metrics": [
+    "official_compile",
+    "run_completion",
+    "resolved_tasks",
+    "patch_capture_rate",
+    "repeat_call_streaks",
+    "malformed_tool_calls",
+    "elapsed_minutes_per_task",
+    "context_overflow_count"
+  ],
+  "decision_rule": "Do not call the candidate improved until a current-harness run is complete and the exact ZIP hash is recorded. Compare paired task-level results when possible.",
+  "source_urls": [
+    "https://github.com/Strider221B/gemma4_dev_agent/blob/main/data/HARNESS_README.md",
+    "https://pilkwangkim.github.io/posts/Gemma-4-Developer-Agent-Part-2-Measuring-an-Agent-While-Its-Evaluator-Moved/"
+  ]
+}

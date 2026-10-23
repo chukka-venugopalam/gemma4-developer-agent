@@ -1,3 +1,5 @@
-# Notebooks
+# Kaggle notebooks
 
-The current S0 harness-preflight notebook is [`preflight-s0/gemma_s0_preflight.ipynb`](preflight-s0/gemma_s0_preflight.ipynb). Follow [`preflight-s0/RUN_ORDER.md`](preflight-s0/RUN_ORDER.md) and use a fresh copy of the official Kaggle starter. The previous preflight environment did not have the official wheelhouse available, so static checks must not be described as an official compile or Gemma run.
+Use a fresh copy of the official competition starter for preflight and real-model tests. Preserve existing or running notebooks. Mount the live competition wheelhouse and data, record package versions, compile the exact `dist/submission.zip`, and save full output logs.
+
+The archived `GEMMA_S0_PREFLIGHT_PACK.zip` and `GEMMA_S0_KAGGLE_RUN_ORDER.md` are diagnostic materials from an earlier run. They are not proof that the current candidate passed the official current harness. Obtain a traceback for any `Notebook Threw Exception` row before attributing cause.

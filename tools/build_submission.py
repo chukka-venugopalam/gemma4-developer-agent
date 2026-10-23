@@ -1,36 +1,75 @@
 #!/usr/bin/env python3
-"""Build a reproducible submission.zip from the canonical submission/ source."""
+"""Build a deterministic competition ZIP from submission/ after static validation."""
 from __future__ import annotations
-import argparse, hashlib, os, subprocess, sys, zipfile
+
+import argparse
+import hashlib
+import subprocess
+import sys
+import zipfile
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1]
-def main():
-    ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--out',type=Path,default=ROOT/'dist'/'submission.zip')
-    ap.add_argument('--skip-static-validation',action='store_true')
-    args=ap.parse_args(); src=ROOT/'submission'; out=args.out.resolve(); out.parent.mkdir(parents=True,exist_ok=True)
-    if not (src/'agent.yaml').is_file(): raise SystemExit('FAIL: submission/agent.yaml is missing')
-    if not args.skip_static_validation:
-        r=subprocess.run([sys.executable,str(ROOT/'tools'/'validate_submission.py'),str(src)],text=True)
-        if r.returncode: raise SystemExit('FAIL: static validation failed; ZIP not built')
-    files=[p for p in src.rglob('*') if p.is_file()]
-    # Keep the established archive member order to preserve byte-identical rebuilds
-    # where the source content is unchanged. Additional files sort after these entries.
-    canonical_order={'agent.yaml':0,'eval_config.yaml':1,'configs/sampling.yaml':2,'prompts/system.md':3}
-    files.sort(key=lambda p:(canonical_order.get(p.relative_to(src).as_posix(),99),p.relative_to(src).as_posix()))
-    if not files: raise SystemExit('FAIL: source folder is empty')
-    with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
-        for p in files:
-            arc=p.relative_to(src).as_posix()
-            zi=zipfile.ZipInfo(arc,date_time=(1980,1,1,0,0,0))
-            zi.compress_type=zipfile.ZIP_DEFLATED
-            zi.external_attr=(0o100644 & 0xffff)<<16
-            z.writestr(zi,p.read_bytes(),compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
-    with zipfile.ZipFile(out) as z:
-        bad=z.testzip()
-        if bad: raise SystemExit(f'FAIL: built ZIP CRC issue: {bad}')
-    print(f'BUILT: {out}')
-    print(f'BYTES: {out.stat().st_size}')
-    print('SHA256:',hashlib.sha256(out.read_bytes()).hexdigest())
-    print('NOTICE: static package validity only; run the official current competition compiler separately.')
-if __name__=='__main__': main()
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "submission"
+DEFAULT_OUT = ROOT / "dist" / "submission.zip"
+FIXED_TIME = (2026, 10, 23, 0, 0, 0)
+
+
+def digest(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for block in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
+def build(out: Path) -> Path:
+    validate = subprocess.run(
+        [sys.executable, str(ROOT / "tools" / "validate_submission.py")],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    print(validate.stdout, end="")
+    if validate.stderr:
+        print(validate.stderr, file=sys.stderr, end="")
+    if validate.returncode != 0:
+        raise SystemExit("Build aborted: static validation failed.")
+
+    paths = sorted(p for p in SRC.rglob("*") if p.is_file())
+    if not paths:
+        raise SystemExit("Build aborted: submission/ contains no files.")
+    out = out.resolve()
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(out, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+        for path in paths:
+            rel = path.relative_to(SRC).as_posix()
+            info = zipfile.ZipInfo(rel, date_time=FIXED_TIME)
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.create_system = 3
+            info.external_attr = (0o100644 & 0xFFFF) << 16
+            info.flag_bits |= 0x800
+            zf.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+    with zipfile.ZipFile(out, "r") as zf:
+        bad = zf.testzip()
+        if bad:
+            raise SystemExit(f"Build failed ZIP integrity: {bad}")
+        if "agent.yaml" not in zf.namelist():
+            raise SystemExit("Build failed: agent.yaml not at archive root")
+    print(f"BUILT: {out.relative_to(ROOT) if out.is_relative_to(ROOT) else out}")
+    print(f"BYTES: {out.stat().st_size}")
+    print(f"SHA256: {digest(out)}")
+    print("NOTE: deterministic ZIP + local static checks do not prove official Kaggle compilation.")
+    return out
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    args = parser.parse_args()
+    build(args.output)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

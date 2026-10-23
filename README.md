@@ -1,92 +1,94 @@
-# Gemma 4 Developer Agent Research and Evaluation
+# Gemma 4 Developer Agent Research & Submission Toolkit
 
-An evidence-tracked repository for developing and evaluating a software-repair agent for the [Google – The Gemma 4 Developer Agent Competition](https://www.kaggle.com/competitions/gemma-4-developer-agent).
+A reproducible workspace for researching, building, and auditing a software-engineering agent for the **Google – The Gemma 4 Developer Agent Competition**. The project keeps the submission source, research evidence, historical candidate archives, and evaluation records separate so results can be traced to the artifact and environment that produced them.
 
-The repository contains the editable agent configuration, reproducible packaging tools, public-agent research, evaluation plans, submission archives, preflight notebooks, and records of observed Kaggle outcomes. It is designed so that each candidate can be rebuilt, hashed, and compared without overwriting earlier artifacts.
+> **Status:** The October 23, 2026 candidate passes local structural validation only. It has not been compiled with the live competition wheelhouse or evaluated with real Gemma in this environment. No score is guaranteed.
 
-> **Current evaluation status (22 October 2026):** the latest supplied Kaggle screenshot shows **Notebook Threw Exception**. The visible detail pane reports an unhandled notebook error but does not show a Python traceback, public score, submission reference, or archive hash. The exact cause and candidate-to-row linkage are therefore unresolved. Previous screenshots show scores of 0.00, 0.03, and 0.06, but most cannot be reliably attributed to the archived ZIPs.
+## Current candidate
 
-## Current source and reproducibility
+The canonical submission source is `submission/`. Build the competition artifact locally:
 
-- `submission/` is the canonical editable agent source.
-- `python tools/validate_submission.py submission` performs local static checks only.
-- `python tools/build_submission.py` builds `dist/submission.zip` from that source.
-- `python tools/validate_submission.py dist/submission.zip` checks the built archive.
-- `python -m unittest discover -s tests -v` runs repository-level tests.
-- `python tools/check_repo.py` verifies repository housekeeping, archived ZIP hashes and basic secret-pattern checks.
-
-These local checks **do not replace the official competition compiler or a real Gemma run**. The current candidate has not been proven to compile or execute under the exact live Kaggle wheelhouse based on the artifacts available in this repository.
-
-## Quick start
-
-Python 3.10 or later is recommended for repository tooling. From the repository root:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+```bash
 python -m pip install -r requirements-dev.txt
-python tools/validate_submission.py submission
+python tools/validate_submission.py
 python tools/build_submission.py
-python tools/validate_submission.py dist/submission.zip
-python -m unittest discover -s tests -v
-python tools/check_repo.py
 ```
 
-`requirements-dev.txt` installs only local development dependencies. It does not install or emulate the competition runtime.
+This creates `dist/submission.zip` with `agent.yaml` at the archive root. The ZIP contains only submission files; research reports and historical experiments are not included.
 
-## Repository map
+The current candidate is named **Budget-Fit-Inspired V3**. It uses the required 31B base model, one root agent, bounded reasoning, 28 tool calls, an 8-minute per-task limit, lexical-first localization, optional symbol-grounded graph calls, minimal source edits, targeted verification, and a final patch review. It is inspired by public reference evidence but is not the original author's byte-identical package.
+
+## Validate and test the repository
+
+```bash
+python tools/validate_submission.py
+python tools/check_repo.py
+python -m unittest discover -s tests -v
+python tools/build_submission.py --output dist/submission.zip
+```
+
+Local validation checks file layout, YAML structure, includes, model/tool names, evaluation fields, prompt-template hazards, allowed submission extensions, and ZIP integrity. **These checks are not the official Kaggle compiler.** Run the preflight notebook described under `notebooks/` in Kaggle with the live competition wheelhouse attached before using a submission opportunity.
+
+## Repository layout
 
 | Path | Purpose |
 |---|---|
-| `submission/` | Canonical source for the current agent candidate. |
-| `submissions/archive/` | Immutable ZIPs of recovered submission candidates. |
-| `submissions/manifest.csv` | SHA-256, size, source aliases, and attribution notes for each unique candidate ZIP. |
-| `research/reports/` | Research reports, forensic findings, and validation reports. |
-| `research/prompts/` | Research and engineering prompts used to produce the archived reports. |
-| `research/ablation/` | Development-set design, planned ablations, and supporting utilities. |
-| `research/bundles/` | Original research-output bundles preserved for provenance. |
-| `research/raw/` | Raw discovery output retained as source evidence; review before redistribution. |
-| `research/evidence/screenshots/` | Submission status evidence, with score/archive linkage noted where unknown. |
-| `notebooks/preflight-s0/` | Kaggle preflight notebook, run order, and execution instructions. |
-| `evaluation/logs/` | Captured outputs from the preflight attempt. |
-| `evaluation/results/` | Score observations and experiment registry. |
-| `tools/` | Build, static validation, registration, and repository checks. |
-| `docs/` | Project status, competition contract, research conclusions, data policy, and runbooks. |
+| `submission/` | Canonical editable source for the next submission. |
+| `submissions/archive/` | Prior submission ZIPs retained for comparison. |
+| `submissions/source_snapshots/` | Readable snapshots of previous source bundles. |
+| `submissions/manifest.csv` | Archive hashes, sizes, aliases, and provenance notes. |
+| `research/reports/` | Public research synthesis, forensic reports, and preflight reports. |
+| `research/prompts/` | Prompts used for separate research and engineering missions. |
+| `research/bundles/` | Original ZIP outputs supplied during research, including diagnostic packs. |
+| `research/evidence/screenshots/` | Cropped screenshots documenting scores and Kaggle statuses. |
+| `research/raw/` | Raw extracted source captures, retained as evidence rather than endorsed claims. |
+| `evaluation/configs/` | Configurations for future controlled experiments. |
+| `evaluation/results/` | Submission and experiment ledgers. |
+| `notebooks/` | Kaggle preflight and evaluation notebook instructions. |
+| `tools/` | Build, validation, hash, and artifact-registration utilities. |
+| `docs/` | Competition requirements, design decisions, runbook, and contribution guidance. |
+| `tests/` | Local tests for repository tooling. |
 
-## What the research currently supports
+## What research has established
 
-1. **Packaging correctness is necessary, not sufficient.** An earlier VNEXT candidate had broken relative `!include` targets in the tested older harness. Its additive repair passed that older compiler and a fake-model replay; this does not prove current Kaggle compatibility or explain the historical Kaggle errors.
-2. **Budget and failure-path control deserve priority.** Public-agent research suggests using bounded execution, short outputs, explicit no-repeat rules, targeted verification, and a minimal final diff. Public leaderboard comparisons are noisy and not controlled component ablations.
-3. **Retrieval complexity is not yet justified by measured success.** Symbol-grounded graph tools remain available in the current candidate, but the prompt restricts them to questions they can answer. There is no paired Gemma experiment here that establishes a score gain from graph search or a second agent.
-4. **Local static tests are not model results.** Synthetic self-tests and YAML/archive checks must never be described as patch-resolution performance.
+- The original VNEXT candidate had broken relative `!include` paths. Its additive repair passed an older third-party harness copy, not the current scorer.
+- Several high-scoring public bundles use small, declarative archives and disciplined execution budgets. A public 2026-10-23 study reports a Budget-Fit single-agent reference with 28 calls, an 8-minute task limit, and a 4,096-token reasoning budget. This is useful evidence, not proof that copying its settings guarantees a better score.
+- Long identical tool-call streaks and context/budget failures are measurable risks; prompts should change approach after empty/error results rather than repeat the same call.
+- One supplied screenshot shows a successful score of 0.03; other screenshots show 0.06 and 0.00, plus notebook timeouts and exceptions. Screenshot records do not identify the exact ZIP hashes, so these scores are not attributed to particular bundles.
+- The latest `Notebook Threw Exception` screenshot does not include the traceback. Its cause is still unknown.
+- Static ZIP checks passed for multiple candidates, but that did not establish official compilation, real inference, or hidden-task performance.
 
-Detailed evidence and limitations are in [Research Findings](docs/RESEARCH_FINDINGS.md), [Submission History](docs/SUBMISSION_HISTORY.md), and [Project Status](docs/PROJECT_STATUS.md).
+See [`docs/STATUS_AND_NEXT_STEPS.md`](docs/STATUS_AND_NEXT_STEPS.md), [`docs/HARNESS.md`](docs/HARNESS.md), and [`research/reports/2026-10-23-budget-fit-reference-review.md`](research/reports/2026-10-23-budget-fit-reference-review.md).
 
-## Current open engineering work
+## Research integrity
 
-1. Retrieve the actual traceback for the most recent **Notebook Threw Exception** event and record the full error context without credentials.
-2. Use a fresh copy of the official Kaggle starter notebook and the actual current competition wheelhouse to compile the exact candidate archive.
-3. Verify the live evaluation limits, tool registry, generation settings, and `submit_patch` behavior.
-4. If preflight succeeds, run a bounded real Gemma smoke test on public development tasks and save the actual tool trace, patch, runtime, and verifier result.
-5. Run paired, repeatable ablations before attributing a score improvement to any prompt or configuration change.
-6. Register each new candidate and outcome with hashes; do not tie a public score to a ZIP merely because their dates or filenames look similar.
+Every result should distinguish among:
 
-See [Next Steps](docs/NEXT_STEPS.md) and [Research Progress](docs/RESEARCH_PROGRESS.md).
+- **Static validation:** archive, paths, YAML, and local assertions.
+- **Official compilation:** live competition wheelhouse and official compiler.
+- **Fake-model replay:** wiring and protocol only, not model quality.
+- **Real Gemma run:** actual model inference on named development tasks.
+- **Hosted score:** Kaggle evaluation result linked to a submission reference and exact local candidate hash where possible.
 
-## Adding research and recording results
+Never label a synthetic test, retrieval hit-rate, or non-empty patch rate as Gemma task success. Do not report a score for an artifact unless the submission can be identified. Record blocked checks as blocked instead of inferring a pass.
 
-Read [Adding Artifacts](docs/ADDING_ARTIFACTS.md) for commands and file conventions. In summary:
+## Adding new research or submissions
 
-- Preserve the original report or bundle.
-- Record the date, provenance, evidence level, and SHA-256.
-- Add candidate ZIPs to `submissions/archive/` through `tools/register_artifact.py`.
-- Append a new row to `evaluation/results/score_observations.csv` for every observed Kaggle outcome. Leave the candidate hash blank when exact archive linkage cannot be established.
-- Keep original candidate ZIPs immutable; work from `submission/` for new versions.
+See [`docs/ADDING_ARTIFACTS.md`](docs/ADDING_ARTIFACTS.md). In brief:
 
-## Evidence and data policy
+1. Add a dated, source-attributed report to `research/reports/`.
+2. Preserve the unmodified original under `research/bundles/` when redistribution is permitted.
+3. Add the candidate ZIP to `submissions/archive/` and register its SHA-256 in `submissions/manifest.csv`.
+4. Record Kaggle status, score, observation date, submission reference, and exact hash if known in `evaluation/results/submission_history.csv`.
+5. Update `docs/STATUS_AND_NEXT_STEPS.md` and add an experiment ID to `docs/EXPERIMENT_LOG.md`.
+6. Run repository tests, inspect the diff, and commit a self-contained change.
 
-This is a research record, not an official leaderboard claim. Statuses are treated as observations, not causal evidence. Claims are labeled confirmed, inferred, unknown, blocked, or not tested where appropriate. No hidden tasks, hidden patches, API tokens, browser cookies, or credentials should be committed. Review screenshots and raw logs before redistributing the repository; see [Data Policy](docs/DATA_POLICY.md).
+## License and third-party work
 
-## Contributing
+This repository contains original prompts and tooling plus references, reports, and bundled materials supplied for project continuity. Public notebook/config artifacts retain their own license and attribution requirements. Review `docs/DATA_POLICY.md` before making the repository public; do not assume every upstream artifact may be redistributed merely because it is visible online.
 
-Issues and pull requests are welcome for reproducibility fixes, documented harness changes, improved experiment tracking, and evaluation tooling. Every change to the agent should have a candidate ID, a rationale, an evaluation plan, and an outcome record. See [CONTRIBUTING.md](CONTRIBUTING.md).
+## Competition references
+
+- [Competition overview and rules](https://www.kaggle.com/competitions/gemma-4-developer-agent/overview)
+- [Public harness guide](https://github.com/Strider221B/gemma4_dev_agent/blob/main/data/HARNESS_README.md)
+- [Budget-Fit / evaluator-change research note (Oct 23, 2026)](https://pilkwangkim.github.io/posts/Gemma-4-Developer-Agent-Part-2-Measuring-an-Agent-While-Its-Evaluator-Moved/)

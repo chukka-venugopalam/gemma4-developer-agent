@@ -1,10 +1,9 @@
 agent_class: LlmAgent
-name: gemma_budget_aware_swe_v2
-description: >
-  Budget-aware single-agent SWE repair with lexical-first localization,
-  evidence-gated edits, optional symbol-grounded graph inspection,
-  targeted verification, and a minimal final patch.
+name: gemma_budget_fit_research_v3
 model: gemma-4-31b-it-qat-w4a16-ct
+description: >
+  Single-agent repository repair with bounded reasoning, a strict tool-call budget,
+  evidence-first localization, minimal compatible edits, and targeted verification.
 instruction: !include prompts/system.md
 generate_content_config: !include configs/sampling.yaml
 tools:

@@ -1,5 +1,9 @@
-# Submission Archive
+# Submission artifacts
 
-Every unique candidate ZIP we could recover is archived here with a SHA-256 and byte count in `manifest.csv`. Archive names are normalized; original filename aliases are retained in the manifest. Byte-identical files are stored once.
+`submission/` at the repository root is the only editable source of the current candidate. `tools/build_submission.py` produces `dist/submission.zip` from that source.
 
-These ZIPs include historical candidates and research references. Inclusion here does not mean the candidate compiled under the current scorer, was submitted to Kaggle, or achieved any particular score. `current_candidate=yes` identifies the 2026-10-22 source candidate only, not a claim of score superiority.
+- `archive/` stores immutable historical candidates and the current dated candidate.
+- `source_snapshots/` retains a readable snapshot of the October 22 source bundle.
+- `manifest.csv` records file names, SHA-256 hashes, byte sizes, dates/status labels, and provenance notes.
+
+A score should only be associated with an archive when the evidence identifies that exact uploaded artifact. The current screenshot records do not expose archive hashes, so historical scores are intentionally left unattributed. Do not overwrite old ZIPs; add a dated file instead.

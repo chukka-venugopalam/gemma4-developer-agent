@@ -1,5 +1,3 @@
-# Original Research Bundles
+# Original research bundles
 
-The original Prompt 1, Prompt 3, Prompt 6, Mission 2 follow-up, VNEXT2 research bundle, and prior project scaffold bundle are preserved here byte-for-byte when available. Their contents are also extracted into the relevant repository folders for searchability. The archives remain provenance records; their inclusion does not mean all embedded checks were official/current-harness tests.
-
-The previous `gemma4-developer-agent.zip` contained a `.git/` directory. That zip was not copied into this public-facing archive to avoid carrying stale remotes/history; the visible working-tree scaffold was inspected and merged into this repository instead.
+Files here preserve supplied output ZIPs and previous candidate bundles. Do not edit them in place. Extract or copy selected files into a new dated work directory and record the source hash. Redistribution permissions vary by upstream artifact; review `docs/DATA_POLICY.md` before making this repository public.
