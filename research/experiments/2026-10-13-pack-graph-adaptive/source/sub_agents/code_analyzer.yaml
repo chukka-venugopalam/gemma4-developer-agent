@@ -1,0 +1,4 @@
+# Code analyzer sub-agent
+# PLACEHOLDER.
+# Do not activate until baseline experiments demonstrate that a separate
+# analyzer improves patch success.

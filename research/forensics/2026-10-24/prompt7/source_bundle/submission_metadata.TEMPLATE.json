@@ -1,0 +1,6 @@
+{
+  "_TEMPLATE": true,
+  "status": "TEMPLATE - NO LIVE DATA. Live retrieval was BLOCKED in the authoring environment (no Kaggle credentials, Kaggle hosts unreachable). Run fetch_submission_metadata.py to produce the real submission_metadata.json.",
+  "meta": {},
+  "rows": []
+}

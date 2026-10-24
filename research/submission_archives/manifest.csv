@@ -1,0 +1,4 @@
+archive,bytes,sha256,candidate_or_version,official_current_harness_compile,real_gemma_inference,hosted_score,notes
+research/submission_archives/historical/submission_06_10_2026.zip,4057,5d59a117fdec1f8a30d16f6360e66ce2320aebe0758b39fb753ff241ab338043,Historical archive; source/score association not established here,NOT TESTED,NOT TESTED,UNKNOWN,Preserved for provenance; do not infer a score from the filename
+research/submission_archives/historical/submission_07_10_2026.zip,6306,4785b4623407bb48d88367beeeb8f35193343987252e1b488446a9101b8dda47,Historical archive; source/score association not established here,NOT TESTED,NOT TESTED,UNKNOWN,Preserved for provenance; do not infer a score from the filename
+research/submission_archives/submission-GEMMA-REFERENCE-CALIBRATED-V4-2026-10-24.zip,2892,2394bbdec0fcd0700effb5f4f79de3f338f3fd4a8df5c1f1d5882da2d54457fa,Reference-Calibrated V4,NOT TESTED,NOT TESTED,UNKNOWN,Current candidate build

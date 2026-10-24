@@ -1,0 +1,7 @@
+label,filename,bytes,sha256,role,structural_or_old_mirror_result,known_kaggle_ref,association_evidence
+VNEXT-ORIGINAL,candidates/submission-VNEXT.zip,5938,292c4ab28c9c516f26f92b71e9352f0e5d87dbfef95b0120845b77f6f62c00da,baseline; 2 broken relative !include in sub_agents/code_analyzer.yaml,FAIL old-mirror compile (include error),UNKNOWN,none until fetch_submission_metadata.py runs; then SIZE-ONLY
+VNEXT-INCLUDEFIX-ADDITIVE,candidates/submission-VNEXT-INCLUDEFIX-ADDITIVE.zip,7700,c26518e6a6b91eff4136238a121a93bb045e593e7586b314795b6945efac1126,"Mission-1 repair: 2 added byte-copies, nothing else changed",PASS old-mirror compile + fake replay,UNKNOWN,none until fetch_submission_metadata.py runs; then SIZE-ONLY
+EVIDENCE-V1,candidates/submission.zip,4849,46e455c81d594b9532cd51f142bc7482020293514b36d6a539ecff21edc67343,assumption A1: submission.zip = EVIDENCE-V1,PASS old-mirror compile,UNKNOWN,none until fetch_submission_metadata.py runs; then SIZE-ONLY
+HYBRID-V2-ADAPTIVE,candidates/submission-GEMMA-HYBRID-V2-ADAPTIVE.zip,5075,2932140057fca9e0aeea2dad736a57dd025fcf6ab1f5f81c8e49d63274e7d66c,12 min cap; 12h budget risk,PASS old-mirror compile,UNKNOWN,none until fetch_submission_metadata.py runs; then SIZE-ONLY
+GRAPH-FUSION-V2,candidates/submission-GRAPH-FUSION-V2.zip,5865,a9e9b7a333a059dce7ce88e660b80ef651e8015c00614591e6994e261322bbe5,60 min cap; 12h budget risk,PASS old-mirror compile,UNKNOWN,none until fetch_submission_metadata.py runs; then SIZE-ONLY
+S0-PROMPT6,(not supplied),,,UNKNOWN - archive was not attached,NOT TESTED / BLOCKED,UNKNOWN,none

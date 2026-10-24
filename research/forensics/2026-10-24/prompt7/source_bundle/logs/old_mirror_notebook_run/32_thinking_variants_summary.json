@@ -1,0 +1,35 @@
+{
+  "BASE_include_thoughts_false": {
+    "verdict": "RAN_TO_COMPLETION",
+    "thinking_fields_sent": [
+      "{\"chat_template_kwargs.enable_thinking\": false}"
+    ],
+    "error": ""
+  },
+  "V1_thoughts_true_budget4096": {
+    "verdict": "RAN_TO_COMPLETION",
+    "thinking_fields_sent": [
+      "{\"chat_template_kwargs.enable_thinking\": true}"
+    ],
+    "error": ""
+  },
+  "V2_thoughts_false_budget4096": {
+    "verdict": "RAN_TO_COMPLETION",
+    "thinking_fields_sent": [
+      "{\"chat_template_kwargs.enable_thinking\": false}"
+    ],
+    "error": ""
+  },
+  "V3_thoughts_false_level_none": {
+    "verdict": "RAN_TO_COMPLETION",
+    "thinking_fields_sent": [
+      "{\"chat_template_kwargs.enable_thinking\": false}"
+    ],
+    "error": ""
+  },
+  "V4_budget_zero_only": {
+    "verdict": "EXCEPTION",
+    "thinking_fields_sent": [],
+    "error": "Submission schema validation failed: 1 validation error for SandboxedAgentConfig\nLlmAgent.generate_content_config.thinking_config.thinking_budget\n  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]\n  "
+  }
+}

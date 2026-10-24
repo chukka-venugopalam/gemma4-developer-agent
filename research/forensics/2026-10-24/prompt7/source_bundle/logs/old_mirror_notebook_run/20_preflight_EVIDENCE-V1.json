@@ -1,0 +1,67 @@
+{
+  "submission_dir": "/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/extracted/EVIDENCE-V1",
+  "harness_dir": "/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official",
+  "force_fallback": false,
+  "versions": {
+    "swegemma": "0.2.7",
+    "adk-submission": "0.2.11",
+    "adk-eval-core": "0.1.0",
+    "google-adk": "1.36.1"
+  },
+  "steps": [
+    {
+      "step": "validate_directory",
+      "ok": true,
+      "detail": "/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/extracted/EVIDENCE-V1/agent.yaml"
+    },
+    {
+      "step": "single_declared_model",
+      "ok": true,
+      "detail": "gemma-4-31b-it-qat-w4a16-ct"
+    },
+    {
+      "step": "discover_adapters",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "step": "compile_submission",
+      "ok": true,
+      "detail": {
+        "name": "gemma_swe_adaptive_evidence_v1",
+        "type": "LlmAgent",
+        "model": "openai/gemma-4-31b-it-qat-w4a16-ct",
+        "instruction_chars": 8445,
+        "tools": [
+          "run_command",
+          "read_file",
+          "edit_file",
+          "write_file",
+          "get_status",
+          "submit_patch",
+          "get_code_neighbors",
+          "search_similar_code",
+          "get_code_subgraph"
+        ],
+        "generate_content_config": {
+          "temperature": 0.2,
+          "top_p": 0.95,
+          "top_k": 40.0,
+          "max_output_tokens": 8192,
+          "thinking_config": {
+            "include_thoughts": true,
+            "thinking_budget": 4096
+          }
+        },
+        "sub_agents": [],
+        "agent_tools": []
+      }
+    }
+  ],
+  "notes": [
+    "single-model check: swegemma helper from swegemma.models",
+    "compile tools: swegemma.tools.create_tools(None)",
+    "compile models: swegemma.models.registry.setup_gemma_model_registry"
+  ],
+  "VERDICT_compile_submission": "PASS"
+}

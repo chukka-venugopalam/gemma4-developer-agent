@@ -1,0 +1,31 @@
+{
+  "VERDICT": "EXCEPTION",
+  "exc_type": "adk_submission.errors.SubmissionSchemaError",
+  "message": "Submission schema validation failed: 1 validation error for SandboxedAgentConfig\nLlmAgent.generate_content_config.thinking_config.thinking_budget\n  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.14/v/greater_than_equal",
+  "traceback_tail": [
+    "    return future.result()",
+    "           ~~~~~~~~~~~~~^^",
+    "  File \"/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/tools/replay_http_capture.py\", line 157, in run",
+    "    agent = compile_submission(submission_dir=SUB, tool_registry=tr, model_registry=models, limits=limits,",
+    "                               generation_constraints=gc, script_timeout=180)",
+    "  File \"/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/adk_submission/compiler.py\", line 140, in compile_submission",
+    "    handle_schema_validation_error(e, context_desc=\"config\")",
+    "    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/adk_submission/paths.py\", line 214, in handle_schema_validation_error",
+    "    raise SubmissionSchemaError(f\"Submission schema validation failed: {e}\") from e",
+    "adk_submission.errors.SubmissionSchemaError: Submission schema validation failed: 1 validation error for SandboxedAgentConfig",
+    "LlmAgent.generate_content_config.thinking_config.thinking_budget",
+    "  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]",
+    "    For further information visit https://errors.pydantic.dev/2.14/v/greater_than_equal"
+  ],
+  "label": "FAKE-MODEL REPLAY - NOT A GEMMA TEST - NOT A SCORE TEST",
+  "http_requests_captured": [],
+  "checks": {
+    "undeclared_tools_offered": [],
+    "issue_reached_a_system_prompt": false,
+    "issue_reached_the_root_conversation": false,
+    "raw_template_braces_left": false,
+    "patch_submitted_via_fake_sandbox": null,
+    "thinking_fields_seen_in_any_request": []
+  }
+}

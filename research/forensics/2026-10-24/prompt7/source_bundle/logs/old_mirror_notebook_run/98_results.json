@@ -1,0 +1,185 @@
+{
+  "VNEXT-ORIGINAL": {
+    "role": "NEGATIVE CONTROL (old mirror: include error)",
+    "archive": "/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/candidates/submission-VNEXT.zip",
+    "bytes": 5938,
+    "sha256": "292c4ab28c9c516f26f92b71e9352f0e5d87dbfef95b0120845b77f6f62c00da",
+    "preflight": "FAIL",
+    "preflight_notes": [
+      "single-model check: swegemma helper from swegemma.models",
+      "compile tools: swegemma.tools.create_tools(None)",
+      "compile models: swegemma.models.registry.setup_gemma_model_registry"
+    ],
+    "preflight_failures": [
+      [
+        "compile_submission",
+        "adk_submission.errors.SubmissionValidationError",
+        "!include file not found: /tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/extracted/VNEXT-ORIGINAL/sub_agents/prompts/analyzer.md"
+      ]
+    ],
+    "replay": "EXCEPTION",
+    "replay_checks": {
+      "undeclared_tools_offered": [],
+      "issue_reached_a_system_prompt": false,
+      "issue_reached_the_root_conversation": false,
+      "raw_template_braces_left": false,
+      "patch_submitted_via_fake_sandbox": null,
+      "thinking_fields_seen_in_any_request": []
+    },
+    "replay_error": [
+      "adk_submission.errors.SubmissionValidationError",
+      "!include file not found: /tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/extracted/VNEXT-ORIGINAL/sub_agents/prompts/analyzer.md"
+    ],
+    "thinking_fields_per_request": []
+  },
+  "VNEXT-INCLUDEFIX-ADDITIVE": {
+    "role": "repair under test",
+    "archive": "/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/candidates/submission-VNEXT-INCLUDEFIX-ADDITIVE.zip",
+    "bytes": 7700,
+    "sha256": "c26518e6a6b91eff4136238a121a93bb045e593e7586b314795b6945efac1126",
+    "preflight": "PASS",
+    "preflight_notes": [
+      "single-model check: swegemma helper from swegemma.models",
+      "compile tools: swegemma.tools.create_tools(None)",
+      "compile models: swegemma.models.registry.setup_gemma_model_registry"
+    ],
+    "preflight_failures": [],
+    "replay": "RAN_TO_COMPLETION",
+    "replay_checks": {
+      "undeclared_tools_offered": [],
+      "issue_reached_a_system_prompt": true,
+      "issue_reached_the_root_conversation": true,
+      "raw_template_braces_left": false,
+      "patch_submitted_via_fake_sandbox": true,
+      "thinking_fields_seen_in_any_request": [
+        "chat_template_kwargs.enable_thinking"
+      ]
+    },
+    "replay_error": null,
+    "thinking_fields_per_request": [
+      {
+        "chat_template_kwargs.enable_thinking": false
+      },
+      {
+        "chat_template_kwargs.enable_thinking": false
+      },
+      {
+        "chat_template_kwargs.enable_thinking": false
+      },
+      {
+        "chat_template_kwargs.enable_thinking": false
+      },
+      {
+        "chat_template_kwargs.enable_thinking": false
+      }
+    ]
+  },
+  "EVIDENCE-V1": {
+    "role": "control (assumption A1)",
+    "archive": "/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/candidates/submission.zip",
+    "bytes": 4849,
+    "sha256": "46e455c81d594b9532cd51f142bc7482020293514b36d6a539ecff21edc67343",
+    "preflight": "PASS",
+    "preflight_notes": [
+      "single-model check: swegemma helper from swegemma.models",
+      "compile tools: swegemma.tools.create_tools(None)",
+      "compile models: swegemma.models.registry.setup_gemma_model_registry"
+    ],
+    "preflight_failures": [],
+    "replay": "RAN_TO_COMPLETION",
+    "replay_checks": {
+      "undeclared_tools_offered": [],
+      "issue_reached_a_system_prompt": false,
+      "issue_reached_the_root_conversation": true,
+      "raw_template_braces_left": false,
+      "patch_submitted_via_fake_sandbox": true,
+      "thinking_fields_seen_in_any_request": [
+        "chat_template_kwargs.enable_thinking"
+      ]
+    },
+    "replay_error": null,
+    "thinking_fields_per_request": [
+      {
+        "chat_template_kwargs.enable_thinking": true
+      },
+      {
+        "chat_template_kwargs.enable_thinking": true
+      },
+      {
+        "chat_template_kwargs.enable_thinking": true
+      }
+    ]
+  },
+  "HYBRID-V2-ADAPTIVE": {
+    "role": "control",
+    "archive": "/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/candidates/submission-GEMMA-HYBRID-V2-ADAPTIVE.zip",
+    "bytes": 5075,
+    "sha256": "2932140057fca9e0aeea2dad736a57dd025fcf6ab1f5f81c8e49d63274e7d66c",
+    "preflight": "PASS",
+    "preflight_notes": [
+      "single-model check: swegemma helper from swegemma.models",
+      "compile tools: swegemma.tools.create_tools(None)",
+      "compile models: swegemma.models.registry.setup_gemma_model_registry"
+    ],
+    "preflight_failures": [],
+    "replay": "RAN_TO_COMPLETION",
+    "replay_checks": {
+      "undeclared_tools_offered": [],
+      "issue_reached_a_system_prompt": false,
+      "issue_reached_the_root_conversation": true,
+      "raw_template_braces_left": false,
+      "patch_submitted_via_fake_sandbox": true,
+      "thinking_fields_seen_in_any_request": [
+        "chat_template_kwargs.enable_thinking"
+      ]
+    },
+    "replay_error": null,
+    "thinking_fields_per_request": [
+      {
+        "chat_template_kwargs.enable_thinking": true
+      },
+      {
+        "chat_template_kwargs.enable_thinking": true
+      },
+      {
+        "chat_template_kwargs.enable_thinking": true
+      }
+    ]
+  },
+  "GRAPH-FUSION-V2": {
+    "role": "control",
+    "archive": "/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/candidates/submission-GRAPH-FUSION-V2.zip",
+    "bytes": 5865,
+    "sha256": "a9e9b7a333a059dce7ce88e660b80ef651e8015c00614591e6994e261322bbe5",
+    "preflight": "PASS",
+    "preflight_notes": [
+      "single-model check: swegemma helper from swegemma.models",
+      "compile tools: swegemma.tools.create_tools(None)",
+      "compile models: swegemma.models.registry.setup_gemma_model_registry"
+    ],
+    "preflight_failures": [],
+    "replay": "RAN_TO_COMPLETION",
+    "replay_checks": {
+      "undeclared_tools_offered": [],
+      "issue_reached_a_system_prompt": false,
+      "issue_reached_the_root_conversation": true,
+      "raw_template_braces_left": false,
+      "patch_submitted_via_fake_sandbox": true,
+      "thinking_fields_seen_in_any_request": [
+        "chat_template_kwargs.enable_thinking"
+      ]
+    },
+    "replay_error": null,
+    "thinking_fields_per_request": [
+      {
+        "chat_template_kwargs.enable_thinking": true
+      },
+      {
+        "chat_template_kwargs.enable_thinking": true
+      },
+      {
+        "chat_template_kwargs.enable_thinking": true
+      }
+    ]
+  }
+}

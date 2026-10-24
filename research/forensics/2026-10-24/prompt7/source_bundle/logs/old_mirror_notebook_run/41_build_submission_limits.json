@@ -1,0 +1,4 @@
+{
+  "limits": "SubmissionLimits(max_total_size_bytes=3221225472, max_yaml_size_bytes=52428800, max_skill_size_bytes=52428800, max_file_count=10000, max_yaml_files=1000, max_instruction_chars=1000000, max_total_instruction_chars=10000000, max_agents=500, max_sub_agent_depth=50, max_loop_iterations=500, max_skills=1000, allowed_file_extensions=frozenset({'.md', '.txt', '.safetensors', '.json', '.yaml', '.yml', '.py'}), adapter_extensions=frozenset({'.safetensors'}))",
+  "generation_constraints": "GenerationConstraints(allowed_fields=None, temperature=None, top_p=None, top_k=None, max_output_tokens=NumericRange(min=1, max=32768), presence_penalty=None, frequency_penalty=None, thinking_budget=NumericRange(min=0, max=32768), max_stop_sequences=None, allowed_response_mime_types=None, defaults={'max_output_tokens': 16384, 'thinking_config': {'thinking_budget': 4096}})"
+}

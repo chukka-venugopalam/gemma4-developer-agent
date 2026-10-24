@@ -1,0 +1,186 @@
+{
+  "submission_dir": "/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/extracted/HYBRID-V2-ADAPTIVE",
+  "compiled_agents": {
+    "name": "gemma_swe_repair_v2_1_adaptive",
+    "model_class": "LiteLlm",
+    "extra_body_on_model": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      }
+    },
+    "tools": [
+      "run_command",
+      "read_file",
+      "edit_file",
+      "write_file",
+      "get_status",
+      "submit_patch",
+      "get_code_neighbors",
+      "search_similar_code",
+      "get_code_subgraph"
+    ],
+    "sub_agents": [],
+    "agent_tools": []
+  },
+  "events": [
+    {
+      "invocation": 1,
+      "events": [
+        {
+          "author": "gemma_swe_repair_v2_1_adaptive",
+          "parts": [
+            "call:get_status"
+          ]
+        },
+        {
+          "author": "gemma_swe_repair_v2_1_adaptive",
+          "parts": [
+            "resp:get_status"
+          ]
+        },
+        {
+          "author": "gemma_swe_repair_v2_1_adaptive",
+          "parts": [
+            "call:submit_patch"
+          ]
+        },
+        {
+          "author": "gemma_swe_repair_v2_1_adaptive",
+          "parts": [
+            "resp:submit_patch"
+          ]
+        },
+        {
+          "author": "gemma_swe_repair_v2_1_adaptive",
+          "parts": [
+            "text:done (scripted)"
+          ]
+        }
+      ]
+    }
+  ],
+  "ctx_after": {
+    "patch_submitted": true,
+    "submitted_patch_chars": 65,
+    "tool_calls_used": 0
+  },
+  "VERDICT": "RAN_TO_COMPLETION",
+  "label": "FAKE-MODEL REPLAY - NOT A GEMMA TEST - NOT A SCORE TEST",
+  "http_requests_captured": [
+    {
+      "n": 1,
+      "path": "/v1/chat/completions",
+      "model": "gemma-4-31b-it-qat-w4a16-ct",
+      "stream": false,
+      "top_level_keys": [
+        "chat_template_kwargs",
+        "max_completion_tokens",
+        "messages",
+        "model",
+        "temperature",
+        "tools",
+        "top_k",
+        "top_p"
+      ],
+      "thinking_related_fields": {
+        "chat_template_kwargs.enable_thinking": true
+      },
+      "tools_offered": [
+        "edit_file",
+        "get_code_neighbors",
+        "get_code_subgraph",
+        "get_status",
+        "read_file",
+        "run_command",
+        "search_similar_code",
+        "submit_patch",
+        "write_file"
+      ],
+      "n_messages": 2,
+      "issue_in_system_prompt": false,
+      "issue_in_any_message": true,
+      "raw_template_braces_left": false,
+      "system_prompt_head": "You repair one repository issue in /workspace, offline: no network, no installs."
+    },
+    {
+      "n": 2,
+      "path": "/v1/chat/completions",
+      "model": "gemma-4-31b-it-qat-w4a16-ct",
+      "stream": false,
+      "top_level_keys": [
+        "chat_template_kwargs",
+        "max_completion_tokens",
+        "messages",
+        "model",
+        "temperature",
+        "tools",
+        "top_k",
+        "top_p"
+      ],
+      "thinking_related_fields": {
+        "chat_template_kwargs.enable_thinking": true
+      },
+      "tools_offered": [
+        "edit_file",
+        "get_code_neighbors",
+        "get_code_subgraph",
+        "get_status",
+        "read_file",
+        "run_command",
+        "search_similar_code",
+        "submit_patch",
+        "write_file"
+      ],
+      "n_messages": 4,
+      "issue_in_system_prompt": false,
+      "issue_in_any_message": true,
+      "raw_template_braces_left": false,
+      "system_prompt_head": "You repair one repository issue in /workspace, offline: no network, no installs."
+    },
+    {
+      "n": 3,
+      "path": "/v1/chat/completions",
+      "model": "gemma-4-31b-it-qat-w4a16-ct",
+      "stream": false,
+      "top_level_keys": [
+        "chat_template_kwargs",
+        "max_completion_tokens",
+        "messages",
+        "model",
+        "temperature",
+        "tools",
+        "top_k",
+        "top_p"
+      ],
+      "thinking_related_fields": {
+        "chat_template_kwargs.enable_thinking": true
+      },
+      "tools_offered": [
+        "edit_file",
+        "get_code_neighbors",
+        "get_code_subgraph",
+        "get_status",
+        "read_file",
+        "run_command",
+        "search_similar_code",
+        "submit_patch",
+        "write_file"
+      ],
+      "n_messages": 6,
+      "issue_in_system_prompt": false,
+      "issue_in_any_message": true,
+      "raw_template_braces_left": false,
+      "system_prompt_head": "You repair one repository issue in /workspace, offline: no network, no installs."
+    }
+  ],
+  "checks": {
+    "undeclared_tools_offered": [],
+    "issue_reached_a_system_prompt": false,
+    "issue_reached_the_root_conversation": true,
+    "raw_template_braces_left": false,
+    "patch_submitted_via_fake_sandbox": true,
+    "thinking_fields_seen_in_any_request": [
+      "chat_template_kwargs.enable_thinking"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "python": "3.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]",
+  "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+  "versions": {
+    "swegemma": "0.2.7",
+    "adk-submission": "0.2.11",
+    "adk-eval-core": "0.1.0",
+    "google-adk": "1.36.1",
+    "google-genai": "2.11.0",
+    "litellm": "1.104.2",
+    "pydantic": "2.14.0",
+    "vllm": "NOT INSTALLED (PackageNotFoundError)",
+    "torch": "NOT INSTALLED (PackageNotFoundError)",
+    "pyyaml": "6.0.3"
+  },
+  "wheel_inventory": [],
+  "scorer_script_hits": [],
+  "competition_dir_listing": "NOT MOUNTED"
+}

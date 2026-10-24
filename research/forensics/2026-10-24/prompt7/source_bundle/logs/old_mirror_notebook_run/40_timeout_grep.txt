@@ -1,0 +1,40 @@
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/budget.py:29: command_timeout_seconds: int | None = 300  # Timeout for a single shell command
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/cli.py:149: timeout_seconds=args.timeout_seconds,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/config.py:105: timeout_seconds: int | None = None
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/config.py:180: self.timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/config.py:181: if self.timeout_seconds is not None
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/config.py:182: else self.harness.command_timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/config.py:188: command_timeout_seconds=cmd_timeout,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/context.py:63: max_exec_seconds: int | None = None,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/context.py:112: max_exec_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/context.py:113: if max_exec_seconds is not None
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/context.py:114: else base_harness.command_timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/context.py:122: command_timeout_seconds=final_cmd_timeout,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/context.py:131: self.max_exec_seconds = self.harness.command_timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/evaluate.py:65: config.harness.command_timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/evaluate.py:66: if config.harness.command_timeout_seconds is not None
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/evaluate.py:72: timeout_seconds=cmd_timeout,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/evaluate.py:77: timeout_seconds=cmd_timeout,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/agent_runner.py:86: if config.harness.command_timeout_seconds is not None:
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/agent_runner.py:88: f'- Single command timeout: {config.harness.command_timeout_seconds} seconds (commands exceeding this fail without ending the session)'
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/agent_runner.py:323: config.harness.command_timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/agent_runner.py:324: if config.harness.command_timeout_seconds is not None
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/agent_runner.py:329: timeout_seconds=script_timeout,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/container_setup.py:157: 'pytest_timeout',
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/sample_verification.py:256: timeout_seconds: int = 300,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/sample_verification.py:276: timeout_seconds: Pytest command execution timeout.
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/sample_verification.py:366: timeout=timeout_seconds,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/sample_verification.py:402: timeout=timeout_seconds,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/harness/verification.py:502: timeout=config.harness.command_timeout_seconds,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/sandbox/docker.py:91: timeout_seconds: int = 300
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/sandbox/docker.py:148: int(timeout) if timeout is not None else self.config.timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/sandbox/docker.py:700: timeout = timeout if timeout is not None else self.config.timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/sandbox/subprocess.py:35: timeout_seconds: int = 300,
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/sandbox/subprocess.py:39: self.timeout_seconds = timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/sandbox/subprocess.py:82: int_timeout = int(timeout) if timeout is not None else self.timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/sandbox/subprocess.py:430: timeout = timeout if timeout is not None else self.timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/tools/execution.py:27: cmd_timeout = ctx.harness.command_timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/tools/execution.py:125: if ctx.harness.command_timeout_seconds is not None:
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/swegemma/tools/execution.py:126: status_data['command_timeout_seconds'] = ctx.harness.command_timeout_seconds
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/adk_eval_core/sandbox/base.py:170: timeout_seconds: int | None = None
+/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/adk_eval_core/sandbox/base.py:187: fallback_timeout = self.timeout_seconds if self.timeout_seconds is not None else 300

@@ -1,0 +1,31 @@
+{
+  "VERDICT": "EXCEPTION",
+  "exc_type": "adk_submission.errors.SubmissionValidationError",
+  "message": "!include file not found: /tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/extracted/VNEXT-ORIGINAL/sub_agents/prompts/analyzer.md",
+  "traceback_tail": [
+    "    value = self.construct_object(value_node, deep=deep)",
+    "  File \"/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/venv/lib/python3.13/site-packages/yaml/constructor.py\", line 100, in construct_object",
+    "    data = constructor(self, node)",
+    "  File \"/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/adk_submission/yaml_loader.py\", line 171, in include",
+    "    abs_path = _resolve_include_path(rel_path, self._current_dir, self._root_dir)",
+    "  File \"/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/adk_submission/yaml_loader.py\", line 70, in _resolve_include_path",
+    "    return validate_sandboxed_path(",
+    "        path=raw_target,",
+    "    ...<5 lines>...",
+    "        error_prefix=\"!include\",",
+    "    )",
+    "  File \"/tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/ext/happyc0der_gemma-swe-agent/harness/official/adk_submission/paths.py\", line 161, in validate_sandboxed_path",
+    "    raise SubmissionValidationError(msg)",
+    "adk_submission.errors.SubmissionValidationError: !include file not found: /tmp/claude-0/-home-claude/eb9495f5-98fd-54ef-afd6-cdb1c702c7ab/scratchpad/f7/nbtest/extracted/VNEXT-ORIGINAL/sub_agents/prompts/analyzer.md"
+  ],
+  "label": "FAKE-MODEL REPLAY - NOT A GEMMA TEST - NOT A SCORE TEST",
+  "http_requests_captured": [],
+  "checks": {
+    "undeclared_tools_offered": [],
+    "issue_reached_a_system_prompt": false,
+    "issue_reached_the_root_conversation": false,
+    "raw_template_braces_left": false,
+    "patch_submitted_via_fake_sandbox": null,
+    "thinking_fields_seen_in_any_request": []
+  }
+}

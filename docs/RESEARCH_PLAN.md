@@ -1,19 +1,24 @@
-# Research plan
+# Research Plan
 
-## Completed desk research
+## Stage 1
+Build and verify the smallest valid baseline.
 
-- Public-agent and score-trend review.
-- Archive forensic review of the historical VNEXT include defect.
-- S0 structural preflight design.
-- Budget-Fit/evaluator-change review on 2026-10-23.
+## Stage 2
+Measure failure modes.
 
-## Remaining experiments
+## Stage 3
+Test semantic retrieval.
 
-1. **Run-level incident forensics:** obtain the complete traceback for the latest `Notebook Threw Exception`; establish whether the error occurred before, during, or after agent evaluation.
-2. **Official compile smoke test:** compile the exact current ZIP against the actual wheelhouse in Kaggle.
-3. **Real Gemma smoke test:** one or two public development tasks, with saved tool traces and verifier outcomes.
-4. **Paired reasoning ablation:** compare the previous thinking-disabled S0 with bounded reasoning on the same tasks/seeds. Measure solve outcomes, repeat streaks, malformed calls, patch capture, and elapsed time.
-5. **Budget feasibility:** measure time distribution and estimate whether the 12-hour run can finish. Do not extrapolate from the per-task cap alone.
-6. **Optional small-model track:** only after checking the live competition rules and pending/recorded small-model scores; keep a different final candidate if the bonus is pursued.
+## Stage 4
+Test adaptive graph retrieval.
 
-No new agent architecture should be added without a concrete observed failure and a test that can falsify the proposed fix.
+## Stage 5
+Test surgical editing and verification.
+
+## Stage 6
+Test specialized agents only when justified.
+
+## Stage 7
+Test LoRA only after non-training improvements are measured.
+
+Every change must have an experiment ID and measurable result.

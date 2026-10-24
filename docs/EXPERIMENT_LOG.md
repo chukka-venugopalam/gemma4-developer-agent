@@ -1,11 +1,9 @@
-# Experiment log
+# Experiment Log
 
-Scores are only attached to an exact candidate hash when the evidence identifies it. Status screenshots without a hash remain unattributed.
+| ID | Change | Result | Decision |
+|---|---|---|---|
+| — | Baseline not started | — | — |
 
-| ID | Date | Change or observation | Result | Evidence status | Decision |
-|---|---|---|---|---|---|
-| E-FORENSICS-01 | 2026-10-17 | Original VNEXT package audit | Broken relative `!include` path confirmed by old-harness compile | Confirmed for original archive; does not establish cause of historical Kaggle Error | Do not resubmit original VNEXT |
-| E-PREFLIGHT-01 | 2026-10-20 | S0 static validator | Structural checks passed; official compiler and live inference blocked | Static only | Use current Kaggle wheelhouse before scoring |
-| E-REFERENCE-01 | 2026-10-23 | Review of Budget-Fit single-agent public study | Public reference reported at 0.15–0.18 across observed scorer periods; settings reported as 28 calls / 8 min / 4096 reasoning | Secondary public research; not our candidate's result | Build a reference-informed candidate, retain uncertainty |
-| E-CANDIDATE-03 | 2026-10-23 | Budget-Fit-Inspired V3 | Built and locally validated; no official compile or real inference here | STATIC_PASS | Hold until live preflight |
-| E-INCIDENT-01 | 2026-10-23 | Screenshot: Notebook Threw Exception | Error panel says unhandled notebook error; traceback, submission ref and archive hash absent | Incident confirmed; cause unknown | Retrieve notebook outputs before causal fix |
+| 2026-10-24 V4 | Reference-calibrated single-agent candidate: 8 min, 28 calls, 4,096-token reasoning cap; lexical-first prompt, anti-loop rules, all nine documented tools | Static validation and deterministic build passed locally; current-wheelhouse compile, real Gemma inference, and hosted score not tested | Hold for current-wheelhouse preflight; do not claim improvement until a dated hosted result is linked to this archive hash |
+
+| 2026-10-24 V4 | Reference-calibrated single-agent candidate: 8 min, 28 calls, 4,096-token reasoning cap; lexical-first prompt, anti-loop rules, all nine documented tools | Static validation and deterministic build passed locally; current-wheelhouse compile, real Gemma inference, and hosted score not tested | Hold for current-wheelhouse preflight; do not claim improvement until a dated hosted result is linked to this archive hash |

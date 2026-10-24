@@ -8,16 +8,16 @@ venv/
 # Jupyter
 .ipynb_checkpoints/
 
-# Generated build output
-/dist/
+# Local/generated artifacts
+dist/
 build/
 *.log
 
-# Never commit credentials
+# Competition artifacts
+submission.zip
+*.safetensors
+
+# Secrets
 .env
 .env.*
 !.env.example
-.kaggle/
-
-# Weights/large runtime artifacts are not stored by default
-*.safetensors
