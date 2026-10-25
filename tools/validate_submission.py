@@ -68,9 +68,10 @@ def validate() -> list[str]:
     if not isinstance(tools, list): fail("agent.yaml tools must be a list")
     found_tools = {str(t) for t in tools if isinstance(t, str)}
     unknown = found_tools - ALLOWED_TOOLS
-    missing = ALLOWED_TOOLS - found_tools
+    required_core = {"run_command", "read_file", "edit_file", "write_file", "get_status", "submit_patch"}
+    missing_core = required_core - found_tools
     if unknown: fail(f"unknown tool names declared: {sorted(unknown)}")
-    if missing: fail(f"this candidate is expected to declare all documented tools; missing: {sorted(missing)}")
+    if missing_core: fail(f"required core tools are missing: {sorted(missing_core)}")
     if agent.get("instruction") != "prompts/system.md": fail("instruction must include prompts/system.md")
     if agent.get("generate_content_config") != "configs/sampling.yaml": fail("sampling include must point to configs/sampling.yaml")
 
@@ -92,6 +93,7 @@ def validate() -> list[str]:
     notes.append(f"Required files: {len(REQUIRED)}/{len(REQUIRED)}")
     notes.append(f"Submission files: {len(all_files)}")
     notes.append(f"Declared tools: {len(found_tools)}")
+    notes.append(f"Optional graph tools declared: {len(found_tools & {'get_code_neighbors', 'search_similar_code', 'get_code_subgraph'})}")
     notes.append(f"Model: {MODEL}")
     notes.append(f"Evaluation budget: {e['max_time_minutes']} min / {e['max_tool_calls']} calls / {e['max_turns']} turns")
     return notes

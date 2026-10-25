@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "submission"
 DIST = ROOT / "dist"
 OUT = DIST / "submission.zip"
-FIXED_TIME = (2026, 10, 24, 0, 0, 0)
+FIXED_TIME = (2026, 10, 25, 0, 0, 0)
 
 
 def main() -> None:

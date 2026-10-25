@@ -2,7 +2,7 @@
 
 A reproducible research and submission workspace for the [Google – The Gemma 4 Developer Agent Competition](https://www.kaggle.com/competitions/gemma-4-developer-agent). The project investigates prompt design, repository navigation, tool-use reliability, patch verification, runtime budgets, and evaluation reproducibility for an autonomous software-repair agent.
 
-> **Status (24 October 2026):** `submission/` contains the Reference-Calibrated V4 candidate. It has passed local structural validation and deterministic packaging checks. The current competition wheelhouse compile, real Gemma inference, and a new hosted score have **not** been verified. The candidate must not be described as a confirmed Kaggle pass or as scoring above 0.06.
+> **Status (25 October 2026):** `submission/` contains Budget-Fit Reference-Aligned V5. It passed local static validation, deterministic packaging, and the repository unit tests. The current competition wheelhouse compile, real Gemma inference, and a hosted score for V5 have **not** been verified. The supplied screenshots show two successful submissions displaying 0.18 and four leaderboard entries at 0.24; neither 0.18 row is linked to a known archive hash.
 
 ## What this repository contains
 
@@ -21,7 +21,7 @@ Research artifacts and historical archives are not automatically included in `su
 
 ## Current design
 
-The current candidate uses the required `gemma-4-31b-it-qat-w4a16-ct` model, one root agent, the nine documented tools, a 4,096-token reasoning cap, 8,192 maximum output tokens, and a per-task limit of 8 minutes / 28 tool calls / 100 turns. Its prompt uses lexical-first localization, conditional graph navigation, anti-loop rules, minimal compatible edits, targeted verification, and a final diff review.
+The current candidate uses the required `gemma-4-31b-it-qat-w4a16-ct` model, one root agent, the six core tools reported in the Budget-Fit reference, a 4,096-token reasoning cap, 8,192 maximum output tokens, and a per-task limit of 8 minutes / 28 tool calls / 80 turns. Its prompt emphasizes contract-first behavior, exact lexical localization, an evidence-backed edit by about call 12, one focused check plus at most one repair, loop prevention, and final diff review. This candidate is reference-aligned but independently written; it has not yet been run by the official current Kaggle harness.
 
 These settings are informed by a public Budget-Fit single-agent reference and an independent study of repeated tool calls and evaluation changes. This repository's candidate is an independent implementation; it is **not** claimed to be the exact public reference ZIP or to reproduce its score. The competition's overall 12-hour limit remains a major constraint.
 

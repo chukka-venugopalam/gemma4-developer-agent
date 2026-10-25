@@ -1,0 +1,5 @@
+observation_id,observed_on,surface,status,public_score,rank,submission_age,archive_sha256,evidence_path,notes
+SUB-2026-10-25-A,2026-10-25,Kaggle submissions page,Succeeded,0.18,,1d,,research/evidence/screenshots/2026-10-25-submissions-status-0.18.png,Screenshot shows success and 0.18; exact submission artifact/hash not established.
+SUB-2026-10-25-B,2026-10-25,Kaggle submissions page,Succeeded,0.18,,2d,,research/evidence/screenshots/2026-10-25-submissions-status-0.18.png,Screenshot shows success and 0.18; exact submission artifact/hash not established.
+SUB-2026-10-25-C,2026-10-25,Kaggle submissions page,Notebook Threw Exception,,,3d,,research/evidence/screenshots/2026-10-25-submissions-status-0.18.png,Screenshot does not include traceback or submission ID; cause unresolved.
+LB-2026-10-25,2026-10-25,Kaggle public leaderboard,Observed,0.24,1-4,,,research/evidence/screenshots/2026-10-25-public-leaderboard-top-0.24.png,User screenshot shows four teams displaying 0.24; current leaderboard may subsequently change.

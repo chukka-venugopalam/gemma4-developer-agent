@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
-from validate_submission import validate
+from validate_submission import validate, load_yaml
 
 
 class SubmissionTests(unittest.TestCase):
@@ -24,6 +24,13 @@ class SubmissionTests(unittest.TestCase):
             self.assertIn("agent.yaml", names)
             self.assertIn("prompts/system.md", names)
             self.assertNotIn("submission/agent.yaml", names)
+
+    def test_budget_fit_candidate_uses_six_core_tools(self):
+        agent = load_yaml(ROOT / "submission" / "agent.yaml")
+        self.assertEqual(
+            set(agent["tools"]),
+            {"run_command", "read_file", "edit_file", "write_file", "get_status", "submit_patch"},
+        )
 
     def test_build_is_reproducible(self):
         script = ROOT / "tools" / "build_submission.py"

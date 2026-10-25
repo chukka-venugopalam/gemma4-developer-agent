@@ -1,11 +1,10 @@
 # Changelog
 
-## 2026-10-22 — Research hub consolidation
+## 2026-10-25 — Budget-Fit Reference-Aligned V5
 
-- Unified previous project scaffold and accessible research artefacts.
-- Added clear project status, research synthesis, prioritized next actions and source links.
-- Made the Budget-Aware V2 source the single editable `submission/` folder.
-- Archived available candidate ZIPs and deduplicated byte-identical archives by SHA-256.
-- Added score-observation ledger with explicit unresolved archive attribution.
-- Preserved Prompt 1/2/3 source reports, Prompt 4–7 prompts, raw output bundles, preflight notebook and logs, screenshots, and raw harness-discovery dumps.
-- Added build, validation, artifact registration and repository integrity tools.
+- Canonical `submission/` now uses the best-documented six-tool Budget-Fit configuration reviewed in the supplied research.
+- Added explicit contract-first localization, early evidence-backed edit, one focused check plus at most one repair, and bounded final review.
+- Set 8 minutes / 28 tool calls / 80 turns and 240-second command timeout.
+- Added the verified-methods report, V5 report, immutable source snapshot, candidate archive/hash manifest row, screenshots, and score-observation ledger.
+- Added `tools/check_repo.py`, `tools/register_artifact.py`, and `docs/ADDING_ARTIFACTS.md` for ongoing maintenance.
+- Local static validator/build and repository tests pass. Current official harness compilation, real Gemma inference, and V5 public score remain untested.

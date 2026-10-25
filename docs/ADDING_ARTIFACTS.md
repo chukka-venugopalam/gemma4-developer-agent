@@ -1,35 +1,34 @@
-# Adding research, submissions, and evaluation results
+# Adding research and submission artifacts
 
-Keep source code and evidence separate. Never overwrite a historical candidate: add a new dated artifact and update the ledgers.
+## Register a submission candidate
 
-## Add a research report
+Run from the repository root:
 
-1. Save the report under `research/reports/` using `YYYY-MM-DD-short-topic.md`.
-2. Include source URLs, observation date, method, confidence/evidence status, and what could not be verified.
-3. Preserve the original raw ZIP, log, or external artifact under `research/bundles/` when appropriate and legally redistributable.
-4. Update `docs/STATUS_AND_NEXT_STEPS.md` if the decision changes.
+```bash
+python tools/register_artifact.py candidate /path/to/submission.zip --candidate-id budget-fit-v6 --notes "Describe exactly what changed"
+```
 
-## Add a submission candidate
+Set `--compile-status`, `--inference-status`, and `--score` only when those results were actually observed. The tool copies the ZIP into `research/submission_archives/`, computes SHA-256, and appends a row to `manifest.csv`. It refuses to overwrite an existing candidate file or register an identical ZIP hash twice.
 
-1. Edit the canonical source in `submission/`.
-2. Run `python tools/validate_submission.py` and `python tools/build_submission.py`.
-3. Copy the generated archive into `submissions/archive/submission-YYYY-MM-DD-short-name.zip`.
-4. Run `python tools/register_artifact.py --kind submission --source submissions/archive/submission-YYYY-MM-DD-short-name.zip --date YYYY-MM-DD --title "Short name" --status "built; not officially compiled"`.
-5. Keep the exact SHA-256, bytes, source commit, configuration, validation evidence, and model version in `submissions/manifest.csv` or the experiment record.
+## Register a research report
+
+```bash
+python tools/register_artifact.py report /path/to/report.md --title "public agent comparison" --date 2026-10-25
+```
+
+The report is copied into `research/reports/` with a date-prefixed filename. Preserve source URLs, the retrieval date, evidence tier, uncertainties, and the distinction between source facts and inference. Add a short entry to `docs/EXPERIMENT_LOG.md` when a report changes a design decision.
 
 ## Record a Kaggle result
 
-Add a row to `evaluation/results/submission_history.csv`. Include the observation date, Kaggle ref if available, status, score, notebook version, local ZIP hash, and log path. If the hash or mapping is not exposed, write `unknown`, not an inferred match. Do not assign a numeric score to errors/timeouts.
+Append a row to `evaluation/results/score_observations.csv` and preserve the corresponding screenshot or metadata export. Only fill in a candidate hash when the exact uploaded archive can be linked to the result. Leave it blank otherwise. A `Kaggle Error` or `Notebook Threw Exception` without the actual logs is an unresolved event, not a root-cause diagnosis.
 
-## Evidence labels
+## Validate before committing
 
-- `STATIC_PASS`: structure and local checks only.
-- `OFFICIAL_COMPILE_PASS`: current official compiler accepted the exact archive.
-- `FAKE_REPLAY_PASS`: wiring works with scripted responses; not a model-quality result.
-- `GEMMA_SMOKE_PASS`: real inference ran on a stated task set; not a leaderboard score.
-- `HOSTED_SCORED`: Kaggle published a score for the recorded submission.
-- `BLOCKED` / `UNKNOWN`: evidence is unavailable.
+```bash
+python tools/validate_submission.py submission
+python -m unittest discover -s tests -v
+python tools/build_submission.py
+python tools/check_repo.py
+```
 
-## Before committing
-
-Run `python tools/check_repo.py`, `python -m unittest discover -s tests -v`, `python tools/validate_submission.py`, and inspect `git diff --check` plus the candidate archive manifest. Keep credentials and private keys out of the repository.
+These checks are local repository/package checks only. Current official wheelhouse compilation, real Gemma inference, and a hosted score must be reported separately.
