@@ -1,10 +1,9 @@
 agent_class: LlmAgent
-name: gemma_budget_fit_reference_v5
+name: gemma_evidence_repair_v6
 model: gemma-4-31b-it-qat-w4a16-ct
 description: >
-  Budget-fit single-agent software repair. It establishes the requested behavior,
-  localizes with exact repository evidence, edits early, verifies narrowly, and
-  submits a minimal compatible patch under a strict execution budget.
+  Evidence-first repository repair with precise edit mechanics, conditional code
+  intelligence, targeted verification, and explicit anti-repetition recovery.
 instruction: !include prompts/system.md
 generate_content_config: !include configs/sampling.yaml
 tools:
@@ -14,3 +13,6 @@ tools:
   - write_file
   - get_status
   - submit_patch
+  - get_code_neighbors
+  - search_similar_code
+  - get_code_subgraph

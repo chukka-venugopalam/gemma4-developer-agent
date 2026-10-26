@@ -25,11 +25,14 @@ class SubmissionTests(unittest.TestCase):
             self.assertIn("prompts/system.md", names)
             self.assertNotIn("submission/agent.yaml", names)
 
-    def test_budget_fit_candidate_uses_six_core_tools(self):
+    def test_evidence_repair_candidate_declares_all_nine_registered_tools(self):
         agent = load_yaml(ROOT / "submission" / "agent.yaml")
         self.assertEqual(
             set(agent["tools"]),
-            {"run_command", "read_file", "edit_file", "write_file", "get_status", "submit_patch"},
+            {
+                "run_command", "read_file", "edit_file", "write_file", "get_status", "submit_patch",
+                "get_code_neighbors", "search_similar_code", "get_code_subgraph",
+            },
         )
 
     def test_build_is_reproducible(self):

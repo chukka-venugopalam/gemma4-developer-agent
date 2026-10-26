@@ -27,3 +27,10 @@ The 2026-10-24 candidate uses the 28-call / 8-minute / 4,096-token reasoning env
 **Not claimed:** V5 has no real Gemma run or hosted score yet; it is not claimed to beat 0.24.
 
 **Next gate:** compile using the current official wheelhouse and perform a bounded real Gemma smoke test before any scored run.
+
+
+## DEC-002 — V6 retains reference settings and strengthens operational recovery
+
+Status: PROVISIONAL
+
+V6 retains the public Budget-Fit sampling envelope and evaluation budget, restores all nine registered tool names while keeping graph use conditional, and shortens prompt policy around repeat-call escape, exact edit strings, and targeted verification. The user screenshots show 0.13 after 0.18 rows, but no row has been matched to an archive hash. This change is an experiment, not an established performance improvement. Current official-harness compile and real Gemma execution remain the next gates.

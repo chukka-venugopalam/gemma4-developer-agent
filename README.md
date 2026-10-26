@@ -1,29 +1,28 @@
 # Gemma 4 Developer Agent
 
-A reproducible research and submission workspace for the [Google – The Gemma 4 Developer Agent Competition](https://www.kaggle.com/competitions/gemma-4-developer-agent). The project investigates prompt design, repository navigation, tool-use reliability, patch verification, runtime budgets, and evaluation reproducibility for an autonomous software-repair agent.
+A reproducible research and submission workspace for the [Google – The Gemma 4 Developer Agent Competition](https://www.kaggle.com/competitions/gemma-4-developer-agent). The project studies tool-use reliability, repository localization, patch quality, bounded verification, and the reproducibility of agent evaluations.
 
-> **Status (25 October 2026):** `submission/` contains Budget-Fit Reference-Aligned V5. It passed local static validation, deterministic packaging, and the repository unit tests. The current competition wheelhouse compile, real Gemma inference, and a hosted score for V5 have **not** been verified. The supplied screenshots show two successful submissions displaying 0.18 and four leaderboard entries at 0.24; neither 0.18 row is linked to a known archive hash.
+> **Status (26 October 2026):** `submission/` now contains the Evidence Repair V6 candidate. It passes local static validation and deterministic packaging checks. Current official-wheelhouse compilation, a current-harness fake-model replay, real Gemma inference, and a hosted score have **not** been established for V6. The latest user-supplied submissions screenshot shows 0.13 and two earlier 0.18 rows; those rows are not bound to known archive hashes. A separate leaderboard screenshot showed four entries at 0.24.
 
 ## What this repository contains
 
-- `submission/` — the one canonical source used to build the current candidate archive.
-- `tools/` — static validation and deterministic packaging utilities.
-- `tests/` — automated tests for the repository's build and validation workflow.
-- `research/experiments/` — preserved snapshots of prior source candidates and experiment notes.
-- `research/submission_archives/` — dated candidate ZIPs, including preserved historical archives, with `manifest.csv` recording hashes and evidence status.
-- `research/forensics/` — the Prompt 7 forensic output, logs, manifests, and preflight notebook from 24 October.
-- `research/reports/` — dated research and submission reports.
+- `submission/` — canonical editable source for the current candidate.
+- `tools/` and `tests/` — local static validation, deterministic packaging, artifact registration, integrity checks, and unit tests.
+- `research/experiments/` — immutable source snapshots, submission ZIPs, and experiment notes for each candidate.
+- `research/submission_archives/` — historical ZIPs and a manifest with hashes, provenance, and validation status.
+- `research/forensics/` — submission forensics, current-harness preflight notebooks, reports, and logs.
+- `research/reports/` — public-agent research and dated candidate reports.
 - `gemmapropmt3/` — development-set and ablation planning utilities.
-- `evaluation/` and `notebooks/` — evaluation and notebook documentation.
-- `docs/` — competition constraints, engineering decisions, and experiment history.
+- `evaluation/` and `notebooks/` — score observations, experiment result schema, and notebook documentation.
+- `docs/` — competition constraints, engineering decisions, experiment history, and update instructions.
 
-Research artifacts and historical archives are not automatically included in `submission.zip`.
+Research artifacts are deliberately kept outside `submission/` and are not included in the competition ZIP.
 
-## Current design
+## Current candidate: Evidence Repair V6
 
-The current candidate uses the required `gemma-4-31b-it-qat-w4a16-ct` model, one root agent, the six core tools reported in the Budget-Fit reference, a 4,096-token reasoning cap, 8,192 maximum output tokens, and a per-task limit of 8 minutes / 28 tool calls / 80 turns. Its prompt emphasizes contract-first behavior, exact lexical localization, an evidence-backed edit by about call 12, one focused check plus at most one repair, loop prevention, and final diff review. This candidate is reference-aligned but independently written; it has not yet been run by the official current Kaggle harness.
+V6 uses the required `gemma-4-31b-it-qat-w4a16-ct` model, one root agent, and all nine documented tools. The three code-intelligence tools are declared to avoid registry mismatch, but the prompt keeps their use conditional and symbol-grounded. The prompt emphasizes concise contract extraction, exact lexical localization, small `edit_file` replacements, anti-repetition recovery, a single focused verification cycle, and final diff review.
 
-These settings are informed by a public Budget-Fit single-agent reference and an independent study of repeated tool calls and evaluation changes. This repository's candidate is an independent implementation; it is **not** claimed to be the exact public reference ZIP or to reproduce its score. The competition's overall 12-hour limit remains a major constraint.
+Sampling: temperature 0.2, top-p 0.95, top-k 40, 8,192 maximum output tokens, thinking enabled with a 4,096-token budget. Per-task caps: eight minutes, 28 tool calls, 80 turns, and a 240-second command/verification timeout. This candidate is informed by public reference research and observed user scores; it is not a reconstruction of an inaccessible 0.24 leader, and no score improvement is claimed before a hosted evaluation.
 
 ## Build and validate
 
@@ -34,9 +33,10 @@ python -m pip install -r requirements-dev.txt
 python tools/validate_submission.py
 python -m unittest discover -s tests -v
 python tools/build_submission.py
+python tools/check_repo.py
 ```
 
-The build script creates `dist/submission.zip`. Its root contains `agent.yaml`, `eval_config.yaml`, and the included prompt/configuration files directly; there is no extra parent directory. Builds use stable file order and timestamps so identical source yields an identical ZIP.
+The build script creates `dist/submission.zip`, with `agent.yaml` at the archive root. Stable ordering and timestamps make builds reproducible from identical source.
 
 ### Official Kaggle validation
 
@@ -44,26 +44,29 @@ Local checks are only a preflight. To establish compatibility with the actual sc
 
 1. Open a new copy of the organizer's current starter notebook.
 2. Attach the current competition wheelhouse and competition data.
-3. Run the current-wheelhouse preflight in `research/forensics/2026-10-24/prompt7/source_bundle/KAGGLE_CURRENT_WHEELHOUSE_PREFLIGHT.ipynb`.
-4. Compare the notebook's install procedure with the current organizer starter before executing it.
-5. Check the actual compiler result and tool/agent configuration trace. Run a bounded real Gemma task only after compilation succeeds.
-6. Submit manually only after the preflight and smoke test pass. Do not treat fake-model replay as a Gemma score.
+3. Run the latest `KAGGLE_CURRENT_WHEELHOUSE_PREFLIGHT_V4.ipynb` from the preserved Mission 10 preflight package, using the current starter installation cell.
+4. Check current compiler output, tool wiring, reasoning configuration, and timeout semantics.
+5. Run a bounded real Gemma smoke test only after compilation and fake-model replay pass.
+6. Preserve the exact ZIP SHA-256, runtime version, logs, and score together. Submit manually only after reviewing the gate.
 
-The current forensic report explains why prior old-mirror compilation is not sufficient proof of current scorer compatibility.
+Older-mirror compilation and synthetic tests are not proof of current scorer compatibility.
 
 ## Evidence and experiment policy
 
-- Every score must be linked to a dated Kaggle result and a candidate hash when available.
-- Separate structural validation, old-mirror compile, current-wheel compile, fake-model replay, real inference, and hosted score.
-- Do not label synthetic tests, localization heuristics, or fake-model replay as real patch success.
-- Keep historical candidates immutable. Add each new candidate under a dated folder in `research/experiments/` and register it in `docs/EXPERIMENT_LOG.md`.
-- Do not claim an improvement from one noisy hosted score without paired evidence; the public score may vary across runs and evaluator versions.
-- Never store Kaggle tokens, private credentials, or secrets in source control.
+- Every score must link to a dated Kaggle observation and candidate hash when available.
+- Separate static validation, old-mirror compile, current-wheel compile, fake-model replay, real inference, and hosted score.
+- Never label synthetic checks, localization heuristics, or fake-model replay as real patch success.
+- Preserve each candidate immutably under a dated directory in `research/experiments/` and register its hash in `research/submission_archives/manifest.csv`.
+- Do not claim causality from one noisy leaderboard result. The public board can vary across runs and evaluator versions.
+- Do not store Kaggle tokens, private credentials, or secrets in source control.
 
-## Competition constraints
+## Selected public references
 
-See [`docs/COMPETITION.md`](docs/COMPETITION.md), [`docs/HARNESS.md`](docs/HARNESS.md), and the official [competition page](https://www.kaggle.com/competitions/gemma-4-developer-agent/overview). Treat the official page and currently mounted wheelhouse as authoritative if older research notes disagree.
+- [Competition overview and model/runtime rules](https://www.kaggle.com/competitions/gemma-4-developer-agent/overview)
+- [Harness reference](https://github.com/Strider221B/gemma4_dev_agent/blob/main/data/HARNESS_README.md)
+- [Measuring an agent while its evaluator moved (updated 24 October 2026)](https://pilkwangkim.github.io/posts/Gemma-4-Developer-Agent-Part-2-Measuring-an-Agent-While-Its-Evaluator-Moved/)
+- [Edit mechanics and anti-repeat prompt example](https://github.com/8kta/kaggle-gemma4/blob/main/submission/prompts/system.md)
 
 ## License and attribution
 
-This repository contains independently written agent prompts and tooling plus dated research records. Public reference work is linked in research notes; a reference score or configuration is not represented as our result. Confirm upstream license terms before redistributing third-party artifacts or source excerpts.
+Prompts and tooling in this repository are independently written. Public findings are linked and their limitations recorded. Public scores and reference configurations are not represented as our own results. Confirm upstream license terms before redistributing third-party source or artifacts.
